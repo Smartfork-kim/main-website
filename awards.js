@@ -1,0 +1,450 @@
+// 수상 내역 관리 시스템
+
+// 관리자 인증 시스템 (3중 보안)
+class AdminAuth {
+    constructor() {
+        this.storageKey = 'admin_authenticated';
+        this.passwordKey = 'admin_password';
+        this.recoveryCodeKey = 'admin_recovery_code';
+        
+        // ⚠️ 이 마스터 비밀번호는 절대 변경되지 않습니다 (코드에 하드코딩)
+        // 배포 전에 반드시 변경하세요!
+        this.MASTER_PASSWORD = 'smartfork_master_2024!@#';
+        
+        this.defaultPassword = 'admin1234';
+        this.initPassword();
+    }
+
+    initPassword() {
+        // 처음 사용 시 기본 비밀번호와 복구 코드 생성
+        if (!localStorage.getItem(this.passwordKey)) {
+            localStorage.setItem(this.passwordKey, this.defaultPassword);
+            
+            // 랜덤 복구 코드 생성 (처음 한 번만)
+            const recoveryCode = this.generateRecoveryCode();
+            localStorage.setItem(this.recoveryCodeKey, recoveryCode);
+            
+            // 복구 코드를 콘솔에 출력 (꼭 저장하세요!)
+            console.log('%c🔑 중요! 복구 코드를 안전한 곳에 저장하세요!', 'color: red; font-size: 16px; font-weight: bold');
+            console.log('%c복구 코드: ' + recoveryCode, 'color: blue; font-size: 14px; background: yellow; padding: 10px;');
+            console.log('%c이 코드로 비밀번호를 초기화할 수 있습니다.', 'color: red; font-size: 12px');
+        }
+    }
+
+    generateRecoveryCode() {
+        // 8자리 랜덤 복구 코드 생성
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let code = '';
+        for (let i = 0; i < 8; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return code;
+    }
+
+    isAuthenticated() {
+        return sessionStorage.getItem(this.storageKey) === 'true';
+    }
+
+    authenticate() {
+        const password = prompt('관리자 비밀번호를 입력하세요:\n\n비밀번호를 잊으셨다면 "복구" 또는 "마스터"를 입력하세요.');
+        if (!password) return false;
+
+        // 복구 모드
+        if (password.toLowerCase() === '복구' || password.toLowerCase() === 'recovery') {
+            this.recoveryMode();
+            return false;
+        }
+
+        // 마스터 비밀번호 모드
+        if (password.toLowerCase() === '마스터' || password.toLowerCase() === 'master') {
+            this.masterPasswordMode();
+            return false;
+        }
+
+        const savedPassword = localStorage.getItem(this.passwordKey);
+        
+        // 일반 비밀번호 또는 마스터 비밀번호 확인
+        if (password === savedPassword || password === this.MASTER_PASSWORD) {
+            sessionStorage.setItem(this.storageKey, 'true');
+            alert('✅ 관리자 모드로 전환되었습니다.');
+            return true;
+        } else {
+            alert('❌ 비밀번호가 틀렸습니다.');
+            return false;
+        }
+    }
+
+    masterPasswordMode() {
+        alert('🔐 마스터 비밀번호 모드\n\n마스터 비밀번호는 코드에 하드코딩된 비밀번호입니다.\n일반 비밀번호를 잊었을 때 사용할 수 있습니다.');
+        
+        const masterPassword = prompt('마스터 비밀번호를 입력하세요:');
+        if (!masterPassword) return;
+
+        if (masterPassword === this.MASTER_PASSWORD) {
+            const action = confirm('✅ 마스터 비밀번호 인증 성공!\n\n비밀번호를 초기화하시겠습니까?');
+            if (action) {
+                this.resetPassword();
+            } else {
+                // 마스터 비밀번호로 로그인
+                sessionStorage.setItem(this.storageKey, 'true');
+                alert('관리자 모드로 로그인되었습니다.');
+                location.reload();
+            }
+        } else {
+            alert('❌ 마스터 비밀번호가 틀렸습니다.');
+        }
+    }
+
+    recoveryMode() {
+        const savedRecoveryCode = localStorage.getItem(this.recoveryCodeKey);
+        
+        alert('🔄 복구 모드\n\n처음 사이트를 설정할 때 생성된 8자리 복구 코드를 입력하세요.');
+        
+        const recoveryCode = prompt('복구 코드를 입력하세요 (8자리):');
+        if (!recoveryCode) return;
+
+        if (recoveryCode.toUpperCase() === savedRecoveryCode) {
+            alert('✅ 복구 코드 인증 성공!');
+            this.resetPassword();
+        } else {
+            alert('❌ 복구 코드가 틀렸습니다.');
+        }
+    }
+
+    resetPassword() {
+        const newPassword = prompt('새 비밀번호를 입력하세요 (4자 이상):');
+        if (!newPassword || newPassword.length < 4) {
+            alert('비밀번호는 4자 이상이어야 합니다.');
+            return;
+        }
+
+        const confirmPassword = prompt('새 비밀번호를 다시 입력하세요:');
+        if (newPassword !== confirmPassword) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        localStorage.setItem(this.passwordKey, newPassword);
+        alert('✅ 비밀번호가 초기화되었습니다!\n\n새 비밀번호로 다시 로그인해주세요.');
+        location.reload();
+    }
+
+    logout() {
+        sessionStorage.removeItem(this.storageKey);
+        alert('관리자 모드가 해제되었습니다.');
+    }
+
+    changePassword() {
+        const currentPassword = prompt('현재 비밀번호를 입력하세요:');
+        if (!currentPassword) return;
+
+        const savedPassword = localStorage.getItem(this.passwordKey);
+        
+        // 현재 비밀번호 또는 마스터 비밀번호 확인
+        if (currentPassword !== savedPassword && currentPassword !== this.MASTER_PASSWORD) {
+            alert('❌ 현재 비밀번호가 틀렸습니다.');
+            return;
+        }
+
+        const newPassword = prompt('새 비밀번호를 입력하세요 (4자 이상):');
+        if (!newPassword || newPassword.length < 4) {
+            alert('비밀번호는 4자 이상이어야 합니다.');
+            return;
+        }
+
+        const confirmPassword = prompt('새 비밀번호를 다시 입력하세요:');
+        if (newPassword !== confirmPassword) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        localStorage.setItem(this.passwordKey, newPassword);
+        alert('✅ 비밀번호가 변경되었습니다!');
+    }
+}
+
+class AwardsManager {
+    constructor() {
+        this.storageKey = 'awards_data';
+        this.awards = this.loadAwards();
+        this.currentEditId = null;
+        this.auth = new AdminAuth(); // 인증 시스템 추가
+        this.initElements();
+        this.bindEvents();
+        this.updateAdminUI(); // 관리자 UI 업데이트
+        this.render();
+    }
+
+    initElements() {
+        // 버튼
+        this.adminModeBtn = document.getElementById('admin-mode-btn');
+        this.addBtn = document.getElementById('add-award-btn');
+        this.closeModalBtn = document.getElementById('close-modal-btn');
+        this.cancelBtn = document.getElementById('cancel-btn');
+        this.uploadBtn = document.getElementById('upload-btn');
+        
+        // 모달
+        this.modal = document.getElementById('award-modal');
+        this.modalTitle = document.getElementById('modal-title');
+        
+        // 폼
+        this.form = document.getElementById('award-form');
+        this.awardId = document.getElementById('award-id');
+        this.imageInput = document.getElementById('award-image');
+        this.imagePreview = document.getElementById('image-preview');
+        this.previewImg = document.getElementById('preview-img');
+        this.titleInput = document.getElementById('award-title');
+        this.descriptionInput = document.getElementById('award-description');
+        this.yearInput = document.getElementById('award-year');
+        
+        // 그리드
+        this.grid = document.getElementById('awards-grid');
+        this.emptyMessage = document.getElementById('empty-message');
+    }
+
+    bindEvents() {
+        // 관리자 모드 버튼
+        this.adminModeBtn.addEventListener('click', () => {
+            if (this.auth.isAuthenticated()) {
+                const action = confirm('관리자 모드를 해제하시겠습니까?\n\n비밀번호 변경을 원하시면 "취소"를 누르세요.');
+                if (action) {
+                    this.auth.logout();
+                } else {
+                    this.auth.changePassword();
+                }
+            } else {
+                if (this.auth.authenticate()) {
+                    // 인증 성공
+                }
+            }
+            this.updateAdminUI();
+        });
+        
+        // 추가 버튼
+        this.addBtn.addEventListener('click', () => this.openModal());
+        
+        // 모달 닫기
+        this.closeModalBtn.addEventListener('click', () => this.closeModal());
+        this.cancelBtn.addEventListener('click', () => this.closeModal());
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) this.closeModal();
+        });
+        
+        // 이미지 업로드
+        this.uploadBtn.addEventListener('click', () => this.imageInput.click());
+        this.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
+        
+        // 폼 제출
+        this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleSubmit();
+        });
+    }
+
+    updateAdminUI() {
+        const isAdmin = this.auth.isAuthenticated();
+        
+        // 추가 버튼 표시/숨김
+        this.addBtn.style.display = isAdmin ? 'flex' : 'none';
+        
+        // 관리자 모드 버튼 텍스트 및 스타일 변경
+        if (isAdmin) {
+            this.adminModeBtn.innerHTML = `
+                <i data-lucide="unlock" class="w-4 h-4"></i>
+                관리자 모드 활성
+            `;
+            this.adminModeBtn.className = 'px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2';
+        } else {
+            this.adminModeBtn.innerHTML = `
+                <i data-lucide="lock" class="w-4 h-4"></i>
+                관리자 모드
+            `;
+            this.adminModeBtn.className = 'px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2';
+        }
+        
+        lucide.createIcons();
+        this.render(); // UI 다시 렌더링
+    }
+
+    loadAwards() {
+        const data = localStorage.getItem(this.storageKey);
+        if (data) {
+            return JSON.parse(data);
+        }
+        // 초기 샘플 데이터
+        return [
+            {
+                id: Date.now(),
+                title: 'AI 영상 공모전 대상',
+                description: '국내 최대 규모 AI 영상 공모전에서 대상 수상',
+                year: '2024',
+                image: null
+            }
+        ];
+    }
+
+    saveAwards() {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.awards));
+    }
+
+    openModal(award = null) {
+        this.currentEditId = award ? award.id : null;
+        
+        if (award) {
+            this.modalTitle.textContent = '수상 내역 수정';
+            this.awardId.value = award.id;
+            this.titleInput.value = award.title;
+            this.descriptionInput.value = award.description;
+            this.yearInput.value = award.year;
+            
+            if (award.image) {
+                this.previewImg.src = award.image;
+                this.imagePreview.classList.remove('hidden');
+            }
+        } else {
+            this.modalTitle.textContent = '수상 내역 추가';
+            this.form.reset();
+            this.imagePreview.classList.add('hidden');
+        }
+        
+        this.modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        setTimeout(() => {
+            lucide.createIcons();
+        }, 100);
+    }
+
+    closeModal() {
+        this.modal.style.display = 'none';
+        document.body.style.overflow = '';
+        this.form.reset();
+        this.imagePreview.classList.add('hidden');
+        this.currentEditId = null;
+    }
+
+    handleImageUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        // 파일 크기 체크 (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('이미지 크기는 5MB 이하여야 합니다.');
+            return;
+        }
+        
+        // 이미지 미리보기
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.previewImg.src = e.target.result;
+            this.imagePreview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    handleSubmit() {
+        const awardData = {
+            title: this.titleInput.value.trim(),
+            description: this.descriptionInput.value.trim(),
+            year: this.yearInput.value.trim(),
+            image: this.previewImg.src || null
+        };
+        
+        if (this.currentEditId) {
+            // 수정
+            const index = this.awards.findIndex(a => a.id === this.currentEditId);
+            if (index !== -1) {
+                this.awards[index] = {
+                    ...this.awards[index],
+                    ...awardData
+                };
+            }
+        } else {
+            // 추가
+            this.awards.unshift({
+                id: Date.now(),
+                ...awardData
+            });
+        }
+        
+        this.saveAwards();
+        this.closeModal();
+        this.render();
+    }
+
+    deleteAward(id) {
+        if (!confirm('정말 이 수상 내역을 삭제하시겠습니까?')) return;
+        
+        const index = this.awards.findIndex(a => a.id === id);
+        if (index !== -1) {
+            this.awards.splice(index, 1);
+            this.saveAwards();
+            this.render();
+        }
+    }
+
+    render() {
+        const isAdmin = this.auth.isAuthenticated();
+        
+        if (this.awards.length === 0) {
+            this.grid.innerHTML = '';
+            this.emptyMessage.classList.remove('hidden');
+            lucide.createIcons();
+            return;
+        }
+        
+        this.emptyMessage.classList.add('hidden');
+        
+        this.grid.innerHTML = this.awards.map(award => `
+            <div class="award-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-2xl transition-all duration-300">
+                <div class="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
+                    ${award.image ? 
+                        `<img src="${award.image}" alt="${this.escapeHtml(award.title)}" class="w-full h-full object-cover">` :
+                        `<div class="flex items-center justify-center h-full">
+                            <div class="text-center p-8">
+                                <div class="text-6xl mb-4">🏆</div>
+                                <p class="text-slate-500 text-sm">이미지 없음</p>
+                            </div>
+                        </div>`
+                    }
+                </div>
+                <div class="p-6">
+                    <h4 class="text-xl font-bold text-slate-900 mb-2">${this.escapeHtml(award.title)}</h4>
+                    <p class="text-slate-600 mb-3">${this.escapeHtml(award.description)}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center text-sm text-slate-500">
+                            <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>
+                            <span>${award.year}</span>
+                        </div>
+                        ${isAdmin ? `
+                        <div class="flex gap-2">
+                            <button onclick="awardsManager.openModal(${JSON.stringify(award).replace(/"/g, '&quot;')})" class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors" title="수정">
+                                <i data-lucide="edit-2" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="awardsManager.deleteAward(${award.id})" class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors" title="삭제">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        lucide.createIcons();
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+}
+
+// 초기화
+let awardsManager;
+document.addEventListener('DOMContentLoaded', () => {
+    awardsManager = new AwardsManager();
+    lucide.createIcons();
+});
+
