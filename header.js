@@ -10,7 +10,16 @@ function createHeader(activePage = 'home') {
 
     const menuItems = [
         { id: 'home', label: 'Home', href: 'index.html' },
-        { id: 'about', label: 'About', href: 'about.html' },
+        { 
+            id: 'about', 
+            label: 'About', 
+            href: 'about.html',
+            submenu: [
+                { label: '수상', href: 'awards.html' },
+                { label: '브랜드 아이템', href: 'products-showcase.html' },
+                { label: 'AI 강의', href: 'courses-showcase.html' }
+            ]
+        },
         { id: 'ai-courses', label: 'AI Courses', href: 'ai-courses.html' },
         { id: 'products', label: 'Products', href: 'product.html' },
         { id: 'contact', label: 'Contact', href: 'contact.html' }
@@ -19,13 +28,54 @@ function createHeader(activePage = 'home') {
     const menuHTML = menuItems.map(item => {
         const isActive = item.id === activePage;
         const activeClass = isActive ? 'text-brand font-semibold' : 'text-slate-600 hover:text-brand font-medium';
-        return `<a href="${item.href}" class="nav-link ${activeClass} transition-colors px-2 py-1">${item.label}</a>`;
+        
+        if (item.submenu) {
+            // About 메뉴에 드롭다운 추가
+            const submenuHTML = item.submenu.map(sub => 
+                `<a href="${sub.href}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand hover:text-white transition-colors rounded-md">${sub.label}</a>`
+            ).join('\n                        ');
+            
+            return `
+                    <div class="relative group">
+                        <a href="${item.href}" class="nav-link ${activeClass} transition-colors px-2 py-1 flex items-center gap-1">
+                            ${item.label}
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i>
+                        </a>
+                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none group-hover:pointer-events-auto">
+                            <div class="bg-white rounded-lg shadow-lg border border-slate-200 py-2">
+                                ${submenuHTML}
+                            </div>
+                        </div>
+                    </div>`;
+        } else {
+            return `<a href="${item.href}" class="nav-link ${activeClass} transition-colors px-2 py-1">${item.label}</a>`;
+        }
     }).join('\n                    ');
 
     const mobileMenuHTML = menuItems.map(item => {
         const isActive = item.id === activePage;
         const activeClass = isActive ? 'text-brand bg-brand/10' : 'text-slate-700 hover:text-brand hover:bg-slate-50';
-        return `<a href="${item.href}" class="block px-3 py-3 rounded-md text-base font-medium ${activeClass}">${item.label}</a>`;
+        
+        if (item.submenu) {
+            // 모바일 메뉴에 서브메뉴 추가
+            const submenuId = `mobile-submenu-${item.id}`;
+            const submenuHTML = item.submenu.map(sub => 
+                `<a href="${sub.href}" class="block px-6 py-2 text-sm text-slate-600 hover:text-brand hover:bg-slate-50 rounded-md">${sub.label}</a>`
+            ).join('\n                    ');
+            
+            return `
+                <div>
+                    <a href="${item.href}" class="block px-3 py-3 rounded-md text-base font-medium ${activeClass}">${item.label}</a>
+                    <button data-submenu-toggle="${submenuId}" class="w-full text-left px-3 py-1 text-sm text-slate-500 hover:text-brand flex items-center gap-1">
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i> 더보기
+                    </button>
+                    <div id="${submenuId}" class="hidden pl-4 space-y-1 mt-1">
+                        ${submenuHTML}
+                    </div>
+                </div>`;
+        } else {
+            return `<a href="${item.href}" class="block px-3 py-3 rounded-md text-base font-medium ${activeClass}">${item.label}</a>`;
+        }
     }).join('\n                ');
 
     return `
@@ -66,6 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const activePage = headerContainer.getAttribute('data-page') || 'home';
         headerContainer.innerHTML = createHeader(activePage);
         
+        // Lucide 아이콘 초기화
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        
         // 모바일 메뉴 토글 기능
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -73,8 +128,27 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mobileMenuBtn && mobileMenu) {
             mobileMenuBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
+                // 모바일 메뉴가 열릴 때 아이콘 다시 초기화
+                if (typeof lucide !== 'undefined') {
+                    setTimeout(() => lucide.createIcons(), 100);
+                }
             });
         }
+        
+        // 모바일 서브메뉴 토글 버튼 이벤트
+        document.querySelectorAll('[data-submenu-toggle]').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const submenuId = this.getAttribute('data-submenu-toggle');
+                const submenu = document.getElementById(submenuId);
+                if (submenu) {
+                    submenu.classList.toggle('hidden');
+                    if (typeof lucide !== 'undefined') {
+                        setTimeout(() => lucide.createIcons(), 100);
+                    }
+                }
+            });
+        });
 
         // 스크롤 시 헤더 숨김/표시 기능
         const navbar = document.getElementById('navbar');
