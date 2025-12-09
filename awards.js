@@ -1,4 +1,4 @@
-// 수상 내역 관리 시스템
+// 수상 내역 관리 시스템 (Firebase 버전)
 
 // 관리자 인증 시스템 (3중 보안)
 class AdminAuth {
@@ -6,33 +6,22 @@ class AdminAuth {
         this.storageKey = 'admin_authenticated';
         this.passwordKey = 'admin_password';
         this.recoveryCodeKey = 'admin_recovery_code';
-        
-        // ⚠️ 이 마스터 비밀번호는 절대 변경되지 않습니다 (코드에 하드코딩)
-        // 배포 전에 반드시 변경하세요!
         this.MASTER_PASSWORD = 'smartfork_master_2024!@#';
-        
         this.defaultPassword = 'admin1234';
         this.initPassword();
     }
 
     initPassword() {
-        // 처음 사용 시 기본 비밀번호와 복구 코드 생성
         if (!localStorage.getItem(this.passwordKey)) {
             localStorage.setItem(this.passwordKey, this.defaultPassword);
-            
-            // 랜덤 복구 코드 생성 (처음 한 번만)
             const recoveryCode = this.generateRecoveryCode();
             localStorage.setItem(this.recoveryCodeKey, recoveryCode);
-            
-            // 복구 코드를 콘솔에 출력 (꼭 저장하세요!)
             console.log('%c🔑 중요! 복구 코드를 안전한 곳에 저장하세요!', 'color: red; font-size: 16px; font-weight: bold');
             console.log('%c복구 코드: ' + recoveryCode, 'color: blue; font-size: 14px; background: yellow; padding: 10px;');
-            console.log('%c이 코드로 비밀번호를 초기화할 수 있습니다.', 'color: red; font-size: 12px');
         }
     }
 
     generateRecoveryCode() {
-        // 8자리 랜덤 복구 코드 생성
         const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         let code = '';
         for (let i = 0; i < 8; i++) {
@@ -49,21 +38,17 @@ class AdminAuth {
         const password = prompt('관리자 비밀번호를 입력하세요:\n\n비밀번호를 잊으셨다면 "복구" 또는 "마스터"를 입력하세요.');
         if (!password) return false;
 
-        // 복구 모드
         if (password.toLowerCase() === '복구' || password.toLowerCase() === 'recovery') {
             this.recoveryMode();
             return false;
         }
 
-        // 마스터 비밀번호 모드
         if (password.toLowerCase() === '마스터' || password.toLowerCase() === 'master') {
             this.masterPasswordMode();
             return false;
         }
 
         const savedPassword = localStorage.getItem(this.passwordKey);
-        
-        // 일반 비밀번호 또는 마스터 비밀번호 확인
         if (password === savedPassword || password === this.MASTER_PASSWORD) {
             sessionStorage.setItem(this.storageKey, 'true');
             alert('✅ 관리자 모드로 전환되었습니다.');
@@ -75,8 +60,7 @@ class AdminAuth {
     }
 
     masterPasswordMode() {
-        alert('🔐 마스터 비밀번호 모드\n\n마스터 비밀번호는 코드에 하드코딩된 비밀번호입니다.\n일반 비밀번호를 잊었을 때 사용할 수 있습니다.');
-        
+        alert('🔐 마스터 비밀번호 모드');
         const masterPassword = prompt('마스터 비밀번호를 입력하세요:');
         if (!masterPassword) return;
 
@@ -85,7 +69,6 @@ class AdminAuth {
             if (action) {
                 this.resetPassword();
             } else {
-                // 마스터 비밀번호로 로그인
                 sessionStorage.setItem(this.storageKey, 'true');
                 alert('관리자 모드로 로그인되었습니다.');
                 location.reload();
@@ -97,9 +80,7 @@ class AdminAuth {
 
     recoveryMode() {
         const savedRecoveryCode = localStorage.getItem(this.recoveryCodeKey);
-        
         alert('🔄 복구 모드\n\n처음 사이트를 설정할 때 생성된 8자리 복구 코드를 입력하세요.');
-        
         const recoveryCode = prompt('복구 코드를 입력하세요 (8자리):');
         if (!recoveryCode) return;
 
@@ -117,15 +98,13 @@ class AdminAuth {
             alert('비밀번호는 4자 이상이어야 합니다.');
             return;
         }
-
         const confirmPassword = prompt('새 비밀번호를 다시 입력하세요:');
         if (newPassword !== confirmPassword) {
             alert('비밀번호가 일치하지 않습니다.');
             return;
         }
-
         localStorage.setItem(this.passwordKey, newPassword);
-        alert('✅ 비밀번호가 초기화되었습니다!\n\n새 비밀번호로 다시 로그인해주세요.');
+        alert('✅ 비밀번호가 초기화되었습니다!');
         location.reload();
     }
 
@@ -137,27 +116,21 @@ class AdminAuth {
     changePassword() {
         const currentPassword = prompt('현재 비밀번호를 입력하세요:');
         if (!currentPassword) return;
-
         const savedPassword = localStorage.getItem(this.passwordKey);
-        
-        // 현재 비밀번호 또는 마스터 비밀번호 확인
         if (currentPassword !== savedPassword && currentPassword !== this.MASTER_PASSWORD) {
             alert('❌ 현재 비밀번호가 틀렸습니다.');
             return;
         }
-
         const newPassword = prompt('새 비밀번호를 입력하세요 (4자 이상):');
         if (!newPassword || newPassword.length < 4) {
             alert('비밀번호는 4자 이상이어야 합니다.');
             return;
         }
-
         const confirmPassword = prompt('새 비밀번호를 다시 입력하세요:');
         if (newPassword !== confirmPassword) {
             alert('비밀번호가 일치하지 않습니다.');
             return;
         }
-
         localStorage.setItem(this.passwordKey, newPassword);
         alert('✅ 비밀번호가 변경되었습니다!');
     }
@@ -165,29 +138,26 @@ class AdminAuth {
 
 class AwardsManager {
     constructor() {
-        this.storageKey = 'awards_data';
-        this.awards = this.loadAwards();
+        this.collection = 'awards'; // Firestore 컬렉션명
+        this.awards = [];
         this.currentEditId = null;
-        this.auth = new AdminAuth(); // 인증 시스템 추가
+        this.auth = new AdminAuth();
         this.initElements();
         this.bindEvents();
-        this.updateAdminUI(); // 관리자 UI 업데이트
-        this.render();
+        this.updateAdminUI();
+        this.loadAwards(); // Firebase에서 데이터 로드
     }
 
     initElements() {
-        // 버튼
         this.adminModeBtn = document.getElementById('admin-mode-btn');
         this.addBtn = document.getElementById('add-award-btn');
         this.closeModalBtn = document.getElementById('close-modal-btn');
         this.cancelBtn = document.getElementById('cancel-btn');
         this.uploadBtn = document.getElementById('upload-btn');
         
-        // 모달
         this.modal = document.getElementById('award-modal');
         this.modalTitle = document.getElementById('modal-title');
         
-        // 폼
         this.form = document.getElementById('award-form');
         this.awardId = document.getElementById('award-id');
         this.imageInput = document.getElementById('award-image');
@@ -197,13 +167,11 @@ class AwardsManager {
         this.descriptionInput = document.getElementById('award-description');
         this.yearInput = document.getElementById('award-year');
         
-        // 그리드
         this.grid = document.getElementById('awards-grid');
         this.emptyMessage = document.getElementById('empty-message');
     }
 
     bindEvents() {
-        // 관리자 모드 버튼
         this.adminModeBtn.addEventListener('click', () => {
             if (this.auth.isAuthenticated()) {
                 const action = confirm('관리자 모드를 해제하시겠습니까?\n\n비밀번호 변경을 원하시면 "취소"를 누르세요.');
@@ -220,21 +188,15 @@ class AwardsManager {
             this.updateAdminUI();
         });
         
-        // 추가 버튼
         this.addBtn.addEventListener('click', () => this.openModal());
-        
-        // 모달 닫기
         this.closeModalBtn.addEventListener('click', () => this.closeModal());
         this.cancelBtn.addEventListener('click', () => this.closeModal());
         this.modal.addEventListener('click', (e) => {
             if (e.target === this.modal) this.closeModal();
         });
         
-        // 이미지 업로드
         this.uploadBtn.addEventListener('click', () => this.imageInput.click());
         this.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
-        
-        // 폼 제출
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
             this.handleSubmit();
@@ -243,11 +205,8 @@ class AwardsManager {
 
     updateAdminUI() {
         const isAdmin = this.auth.isAuthenticated();
-        
-        // 추가 버튼 표시/숨김
         this.addBtn.style.display = isAdmin ? 'flex' : 'none';
         
-        // 관리자 모드 버튼 텍스트 및 스타일 변경
         if (isAdmin) {
             this.adminModeBtn.innerHTML = `
                 <i data-lucide="unlock" class="w-4 h-4"></i>
@@ -263,28 +222,36 @@ class AwardsManager {
         }
         
         lucide.createIcons();
-        this.render(); // UI 다시 렌더링
+        this.render();
     }
 
-    loadAwards() {
-        const data = localStorage.getItem(this.storageKey);
-        if (data) {
-            return JSON.parse(data);
+    // Firebase에서 데이터 로드
+    async loadAwards() {
+        try {
+            console.log('📡 Firebase에서 데이터 로드 중...');
+            const snapshot = await db.collection(this.collection).get();
+            
+            this.awards = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            
+            // 수동으로 정렬 (createdAt 필드가 있는 경우)
+            this.awards.sort((a, b) => {
+                if (a.createdAt && b.createdAt) {
+                    return b.createdAt.seconds - a.createdAt.seconds;
+                }
+                return 0;
+            });
+            
+            this.render();
+            console.log('✅ 수상 내역 로드 완료:', this.awards.length, '개');
+        } catch (error) {
+            console.error('❌ 데이터 로드 실패:', error);
+            console.error('에러 코드:', error.code);
+            console.error('에러 메시지:', error.message);
+            alert('데이터를 불러오는데 실패했습니다.\n\n에러: ' + error.message + '\n\nF12를 눌러 Console을 확인해주세요.');
         }
-        // 초기 샘플 데이터
-        return [
-            {
-                id: Date.now(),
-                title: 'AI 영상 공모전 대상',
-                description: '국내 최대 규모 AI 영상 공모전에서 대상 수상',
-                year: '2024',
-                image: null
-            }
-        ];
-    }
-
-    saveAwards() {
-        localStorage.setItem(this.storageKey, JSON.stringify(this.awards));
     }
 
     openModal(award = null) {
@@ -297,8 +264,8 @@ class AwardsManager {
             this.descriptionInput.value = award.description;
             this.yearInput.value = award.year;
             
-            if (award.image) {
-                this.previewImg.src = award.image;
+            if (award.imageUrl) {
+                this.previewImg.src = award.imageUrl;
                 this.imagePreview.classList.remove('hidden');
             }
         } else {
@@ -327,13 +294,11 @@ class AwardsManager {
         const file = e.target.files[0];
         if (!file) return;
         
-        // 파일 크기 체크 (5MB)
         if (file.size > 5 * 1024 * 1024) {
             alert('이미지 크기는 5MB 이하여야 합니다.');
             return;
         }
         
-        // 이미지 미리보기
         const reader = new FileReader();
         reader.onload = (e) => {
             this.previewImg.src = e.target.result;
@@ -342,44 +307,88 @@ class AwardsManager {
         reader.readAsDataURL(file);
     }
 
-    handleSubmit() {
+    async handleSubmit() {
         const awardData = {
             title: this.titleInput.value.trim(),
             description: this.descriptionInput.value.trim(),
             year: this.yearInput.value.trim(),
-            image: this.previewImg.src || null
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
         
-        if (this.currentEditId) {
-            // 수정
-            const index = this.awards.findIndex(a => a.id === this.currentEditId);
-            if (index !== -1) {
-                this.awards[index] = {
-                    ...this.awards[index],
-                    ...awardData
-                };
+        try {
+            // 이미지 업로드 (새 이미지가 있는 경우)
+            if (this.imageInput.files[0]) {
+                const imageUrl = await this.uploadImage(this.imageInput.files[0]);
+                awardData.imageUrl = imageUrl;
+            } else if (this.currentEditId) {
+                // 수정 시 기존 이미지 URL 유지
+                const existingAward = this.awards.find(a => a.id === this.currentEditId);
+                if (existingAward && existingAward.imageUrl) {
+                    awardData.imageUrl = existingAward.imageUrl;
+                }
             }
-        } else {
-            // 추가
-            this.awards.unshift({
-                id: Date.now(),
-                ...awardData
-            });
+            
+            if (this.currentEditId) {
+                // 수정
+                await db.collection(this.collection).doc(this.currentEditId).update(awardData);
+                alert('✅ 수정되었습니다!');
+            } else {
+                // 추가
+                awardData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                await db.collection(this.collection).add(awardData);
+                alert('✅ 추가되었습니다!');
+            }
+            
+            this.closeModal();
+            await this.loadAwards(); // 다시 로드
+        } catch (error) {
+            console.error('❌ 저장 실패:', error);
+            alert('저장에 실패했습니다: ' + error.message);
         }
-        
-        this.saveAwards();
-        this.closeModal();
-        this.render();
     }
 
-    deleteAward(id) {
+    async uploadImage(file) {
+        try {
+            const timestamp = Date.now();
+            const fileName = `awards/${timestamp}_${file.name}`;
+            const storageRef = storage.ref(fileName);
+            
+            // 업로드
+            await storageRef.put(file);
+            
+            // 다운로드 URL 가져오기
+            const url = await storageRef.getDownloadURL();
+            console.log('✅ 이미지 업로드 완료:', url);
+            return url;
+        } catch (error) {
+            console.error('❌ 이미지 업로드 실패:', error);
+            throw error;
+        }
+    }
+
+    async deleteAward(id) {
         if (!confirm('정말 이 수상 내역을 삭제하시겠습니까?')) return;
         
-        const index = this.awards.findIndex(a => a.id === id);
-        if (index !== -1) {
-            this.awards.splice(index, 1);
-            this.saveAwards();
-            this.render();
+        try {
+            // 이미지도 삭제 (선택사항)
+            const award = this.awards.find(a => a.id === id);
+            if (award && award.imageUrl) {
+                try {
+                    const imageRef = storage.refFromURL(award.imageUrl);
+                    await imageRef.delete();
+                    console.log('✅ 이미지 삭제 완료');
+                } catch (error) {
+                    console.warn('⚠️ 이미지 삭제 실패:', error);
+                }
+            }
+            
+            // Firestore에서 삭제
+            await db.collection(this.collection).doc(id).delete();
+            alert('✅ 삭제되었습니다!');
+            await this.loadAwards();
+        } catch (error) {
+            console.error('❌ 삭제 실패:', error);
+            alert('삭제에 실패했습니다.');
         }
     }
 
@@ -398,8 +407,8 @@ class AwardsManager {
         this.grid.innerHTML = this.awards.map(award => `
             <div class="award-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-2xl transition-all duration-300">
                 <div class="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
-                    ${award.image ? 
-                        `<img src="${award.image}" alt="${this.escapeHtml(award.title)}" class="w-full h-full object-cover">` :
+                    ${award.imageUrl ? 
+                        `<img src="${award.imageUrl}" alt="${this.escapeHtml(award.title)}" class="w-full h-full object-cover">` :
                         `<div class="flex items-center justify-center h-full">
                             <div class="text-center p-8">
                                 <div class="text-6xl mb-4">🏆</div>
@@ -421,7 +430,7 @@ class AwardsManager {
                             <button onclick="awardsManager.openModal(${JSON.stringify(award).replace(/"/g, '&quot;')})" class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors" title="수정">
                                 <i data-lucide="edit-2" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="awardsManager.deleteAward(${award.id})" class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors" title="삭제">
+                            <button onclick="awardsManager.deleteAward('${award.id}')" class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors" title="삭제">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -444,7 +453,13 @@ class AwardsManager {
 // 초기화
 let awardsManager;
 document.addEventListener('DOMContentLoaded', () => {
+    // Firebase 초기화 확인
+    if (typeof firebase === 'undefined') {
+        console.error('❌ Firebase가 로드되지 않았습니다!');
+        alert('Firebase 연결에 실패했습니다. 페이지를 새로고침해주세요.');
+        return;
+    }
+    
     awardsManager = new AwardsManager();
     lucide.createIcons();
 });
-

@@ -1,6 +1,6 @@
-// 제품 쇼케이스 관리 시스템
+// 제품 쇼케이스 관리 시스템 (Firebase 버전)
 
-// 관리자 인증 시스템 (3중 보안)
+// 관리자 인증 시스템 (3중 보안) - awards.js와 동일
 class AdminAuth {
     constructor() {
         this.storageKey = 'admin_authenticated';
@@ -138,14 +138,14 @@ class AdminAuth {
 
 class ProductsManager {
     constructor() {
-        this.storageKey = 'products_data';
-        this.products = this.loadProducts();
+        this.collection = 'products';
+        this.products = [];
         this.currentEditId = null;
         this.auth = new AdminAuth();
         this.initElements();
         this.bindEvents();
         this.updateAdminUI();
-        this.render();
+        this.loadProducts();
     }
 
     initElements() {
@@ -226,25 +226,31 @@ class ProductsManager {
         this.render();
     }
 
-    loadProducts() {
-        const data = localStorage.getItem(this.storageKey);
-        if (data) {
-            return JSON.parse(data);
+    async loadProducts() {
+        try {
+            console.log('📡 Firebase에서 데이터 로드 중...');
+            const snapshot = await db.collection(this.collection).get();
+            
+            this.products = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            
+            this.products.sort((a, b) => {
+                if (a.createdAt && b.createdAt) {
+                    return b.createdAt.seconds - a.createdAt.seconds;
+                }
+                return 0;
+            });
+            
+            this.render();
+            console.log('✅ 제품 로드 완료:', this.products.length, '개');
+        } catch (error) {
+            console.error('❌ 데이터 로드 실패:', error);
+            console.error('에러 코드:', error.code);
+            console.error('에러 메시지:', error.message);
+            alert('데이터를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
         }
-        return [
-            {
-                id: Date.now(),
-                title: '샘플 제품',
-                description: '이것은 샘플 제품입니다. 수정하거나 삭제 후 새로운 제품을 추가해보세요!',
-                category: '카테고리',
-                year: '2024',
-                image: null
-            }
-        ];
-    }
-
-    saveProducts() {
-        localStorage.setItem(this.storageKey, JSON.stringify(this.products));
     }
 
     openModal(product = null) {
@@ -258,8 +264,8 @@ class ProductsManager {
             this.categoryInput.value = product.category || '';
             this.yearInput.value = product.year;
             
-            if (product.image) {
-                this.previewImg.src = product.image;
+            if (product.imageUrl) {
+                this.previewImg.src = product.imageUrl;
                 this.imagePreview.classList.remove('hidden');
             }
         } else {
@@ -301,43 +307,80 @@ class ProductsManager {
         reader.readAsDataURL(file);
     }
 
-    handleSubmit() {
+    async handleSubmit() {
         const productData = {
             title: this.titleInput.value.trim(),
             description: this.descriptionInput.value.trim(),
             category: this.categoryInput.value.trim() || '미분류',
             year: this.yearInput.value.trim(),
-            image: this.previewImg.src || null
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
         
-        if (this.currentEditId) {
-            const index = this.products.findIndex(p => p.id === this.currentEditId);
-            if (index !== -1) {
-                this.products[index] = {
-                    ...this.products[index],
-                    ...productData
-                };
+        try {
+            if (this.imageInput.files[0]) {
+                const imageUrl = await this.uploadImage(this.imageInput.files[0]);
+                productData.imageUrl = imageUrl;
+            } else if (this.currentEditId) {
+                const existingProduct = this.products.find(p => p.id === this.currentEditId);
+                if (existingProduct && existingProduct.imageUrl) {
+                    productData.imageUrl = existingProduct.imageUrl;
+                }
             }
-        } else {
-            this.products.unshift({
-                id: Date.now(),
-                ...productData
-            });
+            
+            if (this.currentEditId) {
+                await db.collection(this.collection).doc(this.currentEditId).update(productData);
+                alert('✅ 수정되었습니다!');
+            } else {
+                productData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                await db.collection(this.collection).add(productData);
+                alert('✅ 추가되었습니다!');
+            }
+            
+            this.closeModal();
+            await this.loadProducts();
+        } catch (error) {
+            console.error('❌ 저장 실패:', error);
+            alert('저장에 실패했습니다: ' + error.message);
         }
-        
-        this.saveProducts();
-        this.closeModal();
-        this.render();
     }
 
-    deleteProduct(id) {
+    async uploadImage(file) {
+        try {
+            const timestamp = Date.now();
+            const fileName = `products/${timestamp}_${file.name}`;
+            const storageRef = storage.ref(fileName);
+            
+            await storageRef.put(file);
+            const url = await storageRef.getDownloadURL();
+            console.log('✅ 이미지 업로드 완료:', url);
+            return url;
+        } catch (error) {
+            console.error('❌ 이미지 업로드 실패:', error);
+            throw error;
+        }
+    }
+
+    async deleteProduct(id) {
         if (!confirm('정말 이 제품을 삭제하시겠습니까?')) return;
         
-        const index = this.products.findIndex(p => p.id === id);
-        if (index !== -1) {
-            this.products.splice(index, 1);
-            this.saveProducts();
-            this.render();
+        try {
+            const product = this.products.find(p => p.id === id);
+            if (product && product.imageUrl) {
+                try {
+                    const imageRef = storage.refFromURL(product.imageUrl);
+                    await imageRef.delete();
+                    console.log('✅ 이미지 삭제 완료');
+                } catch (error) {
+                    console.warn('⚠️ 이미지 삭제 실패:', error);
+                }
+            }
+            
+            await db.collection(this.collection).doc(id).delete();
+            alert('✅ 삭제되었습니다!');
+            await this.loadProducts();
+        } catch (error) {
+            console.error('❌ 삭제 실패:', error);
+            alert('삭제에 실패했습니다.');
         }
     }
 
@@ -356,8 +399,8 @@ class ProductsManager {
         this.grid.innerHTML = this.products.map(product => `
             <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-2xl transition-all duration-300">
                 <div class="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
-                    ${product.image ? 
-                        `<img src="${product.image}" alt="${this.escapeHtml(product.title)}" class="w-full h-full object-cover">` :
+                    ${product.imageUrl ? 
+                        `<img src="${product.imageUrl}" alt="${this.escapeHtml(product.title)}" class="w-full h-full object-cover">` :
                         `<div class="flex items-center justify-center h-full">
                             <div class="text-center p-8">
                                 <div class="text-6xl mb-4">📦</div>
@@ -387,7 +430,7 @@ class ProductsManager {
                             <i data-lucide="edit-2" class="w-4 h-4"></i>
                             수정
                         </button>
-                        <button onclick="productsManager.deleteProduct(${product.id})" class="flex-1 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <button onclick="productsManager.deleteProduct('${product.id}')" class="flex-1 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                             삭제
                         </button>
@@ -409,7 +452,12 @@ class ProductsManager {
 
 let productsManager;
 document.addEventListener('DOMContentLoaded', () => {
+    if (typeof firebase === 'undefined') {
+        console.error('❌ Firebase가 로드되지 않았습니다!');
+        alert('Firebase 연결에 실패했습니다. 페이지를 새로고침해주세요.');
+        return;
+    }
+    
     productsManager = new ProductsManager();
     lucide.createIcons();
 });
-

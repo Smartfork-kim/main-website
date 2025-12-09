@@ -1,4 +1,4 @@
-// 강의 포트폴리오 관리 시스템
+// 강의 포트폴리오 관리 시스템 (Firebase 버전)
 
 // 관리자 인증 시스템 (3중 보안)
 class AdminAuth {
@@ -138,14 +138,14 @@ class AdminAuth {
 
 class CoursesManager {
     constructor() {
-        this.storageKey = 'courses_data';
-        this.courses = this.loadCourses();
+        this.collection = 'courses';
+        this.courses = [];
         this.currentEditId = null;
         this.auth = new AdminAuth();
         this.initElements();
         this.bindEvents();
         this.updateAdminUI();
-        this.render();
+        this.loadCourses();
     }
 
     initElements() {
@@ -228,27 +228,31 @@ class CoursesManager {
         this.render();
     }
 
-    loadCourses() {
-        const data = localStorage.getItem(this.storageKey);
-        if (data) {
-            return JSON.parse(data);
+    async loadCourses() {
+        try {
+            console.log('📡 Firebase에서 데이터 로드 중...');
+            const snapshot = await db.collection(this.collection).get();
+            
+            this.courses = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            
+            this.courses.sort((a, b) => {
+                if (a.createdAt && b.createdAt) {
+                    return b.createdAt.seconds - a.createdAt.seconds;
+                }
+                return 0;
+            });
+            
+            this.render();
+            console.log('✅ 강의 로드 완료:', this.courses.length, '개');
+        } catch (error) {
+            console.error('❌ 데이터 로드 실패:', error);
+            console.error('에러 코드:', error.code);
+            console.error('에러 메시지:', error.message);
+            alert('데이터를 불러오는데 실패했습니다.\n\n에러: ' + error.message);
         }
-        return [
-            {
-                id: Date.now(),
-                title: 'ChatGPT 실전 활용',
-                description: '생성형 AI를 활용한 업무 효율화와 실전 활용 방법을 배웁니다.',
-                level: '입문',
-                platform: '인프런',
-                students: '1,000+',
-                duration: '4시간',
-                image: null
-            }
-        ];
-    }
-
-    saveCourses() {
-        localStorage.setItem(this.storageKey, JSON.stringify(this.courses));
     }
 
     openModal(course = null) {
@@ -264,8 +268,8 @@ class CoursesManager {
             this.studentsInput.value = course.students || '';
             this.durationInput.value = course.duration || '';
             
-            if (course.image) {
-                this.previewImg.src = course.image;
+            if (course.imageUrl) {
+                this.previewImg.src = course.imageUrl;
                 this.imagePreview.classList.remove('hidden');
             }
         } else {
@@ -307,7 +311,7 @@ class CoursesManager {
         reader.readAsDataURL(file);
     }
 
-    handleSubmit() {
+    async handleSubmit() {
         const courseData = {
             title: this.titleInput.value.trim(),
             description: this.descriptionInput.value.trim(),
@@ -315,37 +319,74 @@ class CoursesManager {
             platform: this.platformInput.value.trim() || '미정',
             students: this.studentsInput.value.trim() || '0',
             duration: this.durationInput.value.trim() || '미정',
-            image: this.previewImg.src || null
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
         
-        if (this.currentEditId) {
-            const index = this.courses.findIndex(c => c.id === this.currentEditId);
-            if (index !== -1) {
-                this.courses[index] = {
-                    ...this.courses[index],
-                    ...courseData
-                };
+        try {
+            if (this.imageInput.files[0]) {
+                const imageUrl = await this.uploadImage(this.imageInput.files[0]);
+                courseData.imageUrl = imageUrl;
+            } else if (this.currentEditId) {
+                const existingCourse = this.courses.find(c => c.id === this.currentEditId);
+                if (existingCourse && existingCourse.imageUrl) {
+                    courseData.imageUrl = existingCourse.imageUrl;
+                }
             }
-        } else {
-            this.courses.unshift({
-                id: Date.now(),
-                ...courseData
-            });
+            
+            if (this.currentEditId) {
+                await db.collection(this.collection).doc(this.currentEditId).update(courseData);
+                alert('✅ 수정되었습니다!');
+            } else {
+                courseData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                await db.collection(this.collection).add(courseData);
+                alert('✅ 추가되었습니다!');
+            }
+            
+            this.closeModal();
+            await this.loadCourses();
+        } catch (error) {
+            console.error('❌ 저장 실패:', error);
+            alert('저장에 실패했습니다: ' + error.message);
         }
-        
-        this.saveCourses();
-        this.closeModal();
-        this.render();
     }
 
-    deleteCourse(id) {
+    async uploadImage(file) {
+        try {
+            const timestamp = Date.now();
+            const fileName = `courses/${timestamp}_${file.name}`;
+            const storageRef = storage.ref(fileName);
+            
+            await storageRef.put(file);
+            const url = await storageRef.getDownloadURL();
+            console.log('✅ 이미지 업로드 완료:', url);
+            return url;
+        } catch (error) {
+            console.error('❌ 이미지 업로드 실패:', error);
+            throw error;
+        }
+    }
+
+    async deleteCourse(id) {
         if (!confirm('정말 이 강의를 삭제하시겠습니까?')) return;
         
-        const index = this.courses.findIndex(c => c.id === id);
-        if (index !== -1) {
-            this.courses.splice(index, 1);
-            this.saveCourses();
-            this.render();
+        try {
+            const course = this.courses.find(c => c.id === id);
+            if (course && course.imageUrl) {
+                try {
+                    const imageRef = storage.refFromURL(course.imageUrl);
+                    await imageRef.delete();
+                    console.log('✅ 이미지 삭제 완료');
+                } catch (error) {
+                    console.warn('⚠️ 이미지 삭제 실패:', error);
+                }
+            }
+            
+            await db.collection(this.collection).doc(id).delete();
+            alert('✅ 삭제되었습니다!');
+            await this.loadCourses();
+        } catch (error) {
+            console.error('❌ 삭제 실패:', error);
+            alert('삭제에 실패했습니다.');
         }
     }
 
@@ -374,8 +415,8 @@ class CoursesManager {
         this.grid.innerHTML = this.courses.map(course => `
             <div class="course-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-2xl transition-all duration-300">
                 <div class="aspect-[16/10] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
-                    ${course.image ? 
-                        `<img src="${course.image}" alt="${this.escapeHtml(course.title)}" class="w-full h-full object-cover">` :
+                    ${course.imageUrl ? 
+                        `<img src="${course.imageUrl}" alt="${this.escapeHtml(course.title)}" class="w-full h-full object-cover">` :
                         `<div class="flex items-center justify-center h-full">
                             <div class="text-center p-8">
                                 <div class="text-6xl mb-4">🎓</div>
@@ -409,7 +450,7 @@ class CoursesManager {
                             <i data-lucide="edit-2" class="w-4 h-4"></i>
                             수정
                         </button>
-                        <button onclick="coursesManager.deleteCourse(${course.id})" class="flex-1 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <button onclick="coursesManager.deleteCourse('${course.id}')" class="flex-1 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                             삭제
                         </button>
@@ -431,7 +472,12 @@ class CoursesManager {
 
 let coursesManager;
 document.addEventListener('DOMContentLoaded', () => {
+    if (typeof firebase === 'undefined') {
+        console.error('❌ Firebase가 로드되지 않았습니다!');
+        alert('Firebase 연결에 실패했습니다. 페이지를 새로고침해주세요.');
+        return;
+    }
+    
     coursesManager = new CoursesManager();
     lucide.createIcons();
 });
-
