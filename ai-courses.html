@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 강의 서비스 | AI Idea Manufacturing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Noto Sans KR', 'sans-serif'] },
+                    colors: {
+                        brand: { light: '#fbb656', DEFAULT: '#f9a01a', dark: '#d88810', accent: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- 공통 컴포넌트 -->
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans overflow-x-hidden">
+    
+    <!-- Header Container -->
+    <div id="header-container" data-page="ai-courses"></div>
+
+    <main id="main-content" class="pt-20">
+        <!-- Hero Section with Video Background -->
+        <section class="relative text-white text-center overflow-hidden" style="aspect-ratio: 16/9; width: 100%;">
+            <!-- 배경 영상 -->
+            <div class="absolute inset-0 w-full h-full">
+                <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                    <source src="images/courses/hero-video.webm" type="video/webm">
+                    <source src="images/courses/hero-video.mp4" type="video/mp4">
+                </video>
+                <!-- 어두운 오버레이 (텍스트 가독성 향상) -->
+                <div class="absolute inset-0 bg-slate-900/60"></div>
+            </div>
+            
+            <!-- 텍스트 콘텐츠 -->
+            <div class="max-w-4xl mx-auto px-4 relative z-10 flex flex-col items-center justify-center h-full">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-brand">AI Education & Solution</h1>
+                <p class="text-xl text-slate-200">생성형 AI 기술을 활용하여 업무 효율을 극대화하고 창의적인 콘텐츠를 제작합니다.</p>
+            </div>
+        </section>
+
+        <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- AI 활용 입문 -->
+                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100 overflow-hidden book-card">
+                    <div class="bg-slate-100 relative flex items-center justify-center p-6" style="perspective: 1000px; aspect-ratio: 2/2.4;">
+                        <img src="images/courses/book-cover-intro.webp" alt="AI 활용 입문" class="book-image" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); opacity: 0; transform: rotateZ(7deg) rotateY(90deg);">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">AI 활용 입문</h3>
+                        <p class="text-slate-600 mb-4 text-sm">AI에 대한 기초적인 이해부터 실전 중심 실습까지. 생성형 AI의 전반적인 개념과 활용법을 체계적으로 학습합니다.</p>
+                        <button class="w-full py-2.5 px-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors">
+                            더 자세히
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- AI 실전 활용 심화 -->
+                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100 overflow-hidden book-card">
+                    <div class="bg-slate-100 relative flex items-center justify-center p-6" style="perspective: 1000px; aspect-ratio: 2/2.4;">
+                        <img src="images/courses/book-cover-advanced.webp" alt="AI 실전 활용 심화" class="book-image" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); opacity: 0; transform: rotateZ(7deg) rotateY(90deg);">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">AI 실전 활용 심화</h3>
+                        <p class="text-slate-600 mb-4 text-sm">상세페이지 제작, 영상 콘텐츠 생성 등 실무 업무에 바로 적용 가능한 핵심 기술을 집중적으로 교육합니다.</p>
+                        <button class="w-full py-2.5 px-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors">
+                            더 자세히
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 기업 맞춤형 출강 -->
+                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100 overflow-hidden book-card">
+                    <div class="bg-slate-100 relative flex items-center justify-center p-6" style="perspective: 1000px; aspect-ratio: 2/2.4;">
+                        <img src="images/courses/book-cover-corporate.webp" alt="기업 맞춤형 출강" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); opacity: 1;">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">기업 맞춤형 출강</h3>
+                        <p class="text-slate-600 mb-4 text-sm">임직원 대상 ChatGPT, Midjourney 등 실무 활용 프롬프트 엔지니어링 특강을 진행합니다.</p>
+                        <button class="w-full py-2.5 px-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors">
+                            더 자세히
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script type="module" src="main.js"></script>
+    <script>
+        // 책 이미지 3D 회전 애니메이션
+        window.addEventListener('load', function() {
+            console.log('애니메이션 시작');
+            if (typeof gsap !== 'undefined') {
+                console.log('GSAP 로드됨');
+                // 타임라인 생성
+                const tl = gsap.timeline({ delay: 0.3 });
+                
+                // 각 책마다 순차적으로 애니메이션 적용
+                document.querySelectorAll('.book-image').forEach((img, index) => {
+                    tl.to(img, {
+                        opacity: 1,
+                        rotateY: 0,
+                        duration: 0.8,
+                        ease: 'power2.out'
+                    }, index * 0.3) // stagger 효과
+                    .to(img, {
+                        rotateZ: 0,
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    }, `-=0.2`); // Y축 애니메이션이 끝나기 0.2초 전에 Z축 시작
+                });
+            } else {
+                console.log('GSAP이 로드되지 않음');
+            }
+        });
+    </script>
+</body>
+</html>

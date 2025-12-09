@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Styles */
+
+html {
+    scroll-behavior: auto; /* Handled by GSAP or native browser default */
+}
+
+:focus-visible {
+    outline: 2px solid #f9a01a;
+    outline-offset: 2px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.filter-btn.active {
+    background-color: #f9a01a;
+    color: white;
+    border-color: #f9a01a;
+}
+
+/* Active Navigation State */
+.nav-active {
+    color: #f9a01a !important;
+    font-weight: 700;
+}
+
+.parallax-bg {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 5px;
+    border: 2px solid #f1f5f9;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.portfolio-card {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+.portfolio-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+#mobile-menu {
+    transform-origin: top;
+}
+#mobile-menu.hidden {
+    transform: scaleY(0);
+    opacity: 0;
+    visibility: hidden;
+}
+#mobile-menu:not(.hidden) {
+    transform: scaleY(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+::selection {
+    background-color: #f9a01a;
+    color: #ffffff;
+}

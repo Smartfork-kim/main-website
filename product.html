@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 제작 | AI Idea Manufacturing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Noto Sans KR', 'sans-serif'] },
+                    colors: {
+                        brand: { light: '#fbb656', DEFAULT: '#f9a01a', dark: '#d88810', accent: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- 공통 컴포넌트 -->
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans overflow-x-hidden">
+    
+    <!-- Header Container -->
+    <div id="header-container" data-page="products"></div>
+
+    <main id="main-content" class="pt-20">
+        <section class="bg-slate-900 text-white py-24 text-center">
+            <div class="max-w-4xl mx-auto px-4">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">Idea Manufacturing</h1>
+                <p class="text-xl text-slate-300">아이디어를 손에 잡히는 상품으로. 기획부터 제조, 납품까지.</p>
+            </div>
+        </section>
+
+        <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold mb-8 text-center">Our Portfolio</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 1번: 해운대 북극곰 축제 서핑판초 -->
+                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg cursor-pointer gsap-fade-up">
+                        <img src="images/products/product-1.webp" alt="Surfing Poncho" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-white text-2xl font-bold mb-2">해운대 북극곰 축제 서핑판초</h3>
+                            <p class="text-slate-200 text-base">축제 특화 커스텀 굿즈</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 2번: 제주첨단과학기술단지 카본 우산 -->
+                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg cursor-pointer gsap-fade-up">
+                        <img src="images/products/product-2.webp" alt="Umbrella" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-white text-2xl font-bold mb-2">제주첨단과학기술단지 카본 우산</h3>
+                            <p class="text-slate-200 text-base">VIP 행사용 프리미엄 판촉물</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 3번: 마사회 모임 맞춤 커스텀 제작 -->
+                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg cursor-pointer gsap-fade-up">
+                        <img src="images/products/product-3.webp" alt="Custom Towel" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-white text-2xl font-bold mb-2">마사회 모임 맞춤 커스텀 제작</h3>
+                            <p class="text-slate-200 text-base">단체 맞춤형 제품 솔루션</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 4번: What's Next? -->
+                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg cursor-pointer gsap-fade-up bg-brand">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                            <p class="text-white text-lg font-medium mb-3">What's Next?</p>
+                            <div class="mb-4">
+                                <i data-lucide="sparkles" class="w-16 h-16 text-white"></i>
+                            </div>
+                            <h3 class="text-white text-2xl font-bold mb-2">판촉상품 제작 경험 다수 보유</h3>
+                            <p class="text-white text-base mb-6 leading-relaxed">
+                                어떤 제품이든 괜찮습니다.<br>
+                                아이디어만 있다면<br>
+                                저희가 현실로 만들어드립니다.
+                            </p>
+                            <a href="contact.html" class="inline-block px-6 py-2 bg-white text-brand font-semibold rounded-full hover:bg-slate-100 transition-colors">
+                                문의하기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-100 rounded-3xl p-12 text-center">
+                <h3 class="text-2xl font-bold mb-4">50+ 자체 개발 아이디어 상품 보유</h3>
+                <p class="text-slate-600 max-w-5xl mx-auto mb-8">
+                    단순 제작 대행뿐만 아니라, 우리가 직접 기획하고 개발한 50여 종의 특허/실용신안 아이디어 상품을 도매 공급합니다.
+                </p>
+                <a href="contact.html" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-brand hover:bg-brand-dark transition-colors">
+                    문의하기
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

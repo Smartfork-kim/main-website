@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상상을 현실로 | AI Idea Manufacturing</title>
+    <meta name="description" content="AI 기술 강의와 창의적 아이디어 상품 제조의 만남. AI Idea Manufacturing은 당신의 상상을 현실로 만듭니다.">
+    
+    <!-- Fonts & Tailwind -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Noto Sans KR', 'sans-serif'] },
+                    colors: {
+                        brand: { light: '#fbb656', DEFAULT: '#f9a01a', dark: '#d88810', accent: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Libs -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    
+    <!-- 공통 컴포넌트 -->
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans overflow-x-hidden selection:bg-brand selection:text-white">
+    
+    <!-- Header Container -->
+    <div id="header-container" data-page="home"></div>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="hero" class="relative h-screen min-h-[800px] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="images/hero/main-banner.webp" alt="Background" class="w-full h-full object-cover object-center opacity-90 parallax-bg">
+                <div class="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/70 to-slate-50"></div>
+            </div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="inline-block py-1 px-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-medium mb-6 hero-fade-up">
+                    Imagine to Reality
+                </span>
+                <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-6 leading-relaxed hero-fade-up text-transparent bg-clip-text pb-2" style="background-image: linear-gradient(120deg, #f9a01a, #d81484);">
+                    상상, 그 이상의 현실을 만듭니다.
+                </h1>
+                <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-200 mb-10 hero-fade-up font-light leading-relaxed">
+                    비즈니스 성장을 위한 최적의 파트너<br>
+                    실전 AI 교육·솔루션부터 아이디어 상품 맞춤 제작까지
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 hero-fade-up">
+                    <a href="about.html" class="w-48 px-8 py-5 rounded-full backdrop-blur-md border-2 border-brand text-white font-bold text-lg hover:backdrop-blur-none hover:text-brand hover:border-brand transition-all duration-300 shadow-lg text-center flex items-center justify-center" style="background-color: rgba(249, 160, 26, 0.8); background-clip: padding-box;">
+                        회사 소개
+                    </a>
+                    <a href="contact.html" class="w-48 px-8 py-5 rounded-full backdrop-blur-md border-2 border-white text-white font-bold text-lg hover:backdrop-blur-none hover:text-brand hover:border-brand transition-all duration-300 shadow-lg text-center flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.2); background-clip: padding-box;">
+                        문의하기
+                    </a>
+                </div>
+                <style>
+                    a[href="about.html"]:hover,
+                    a[href="contact.html"]:hover {
+                        background-color: white !important;
+                    }
+                </style>
+            </div>
+        </section>
+
+        <!-- Intro Teaser -->
+        <section class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 gsap-fade-up">
+                    <h2 class="text-brand font-bold tracking-wide uppercase mb-2 text-xl md:text-2xl">What We Do</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900">Creative Solutions</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <a href="ai-courses.html" class="group relative rounded-2xl overflow-hidden aspect-[16/9] shadow-xl cursor-pointer gsap-fade-up">
+                        <img src="images/courses/ai-education.webp" alt="AI Education" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-slate-900/60 group-hover:bg-slate-900/50 transition-colors flex flex-col justify-center items-center text-center p-6">
+                            <i data-lucide="bot" class="w-12 h-12 text-brand-light mb-4"></i>
+                            <h3 class="text-2xl font-bold text-white mb-2">AI 솔루션</h3>
+                            <p class="text-slate-200">생성형 AI 교육 및 콘텐츠 제작</p>
+                            <span class="mt-6 text-white border-b border-white/50 pb-1 group-hover:border-brand-light group-hover:text-brand-light transition-all">자세히 보기</span>
+                        </div>
+                    </a>
+                    <a href="product.html" class="group relative rounded-2xl overflow-hidden aspect-[16/9] shadow-xl cursor-pointer gsap-fade-up">
+                        <img src="images/courses/product-manufacturing.webp" alt="Product Manufacturing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-slate-900/60 group-hover:bg-slate-900/50 transition-colors flex flex-col justify-center items-center text-center p-6">
+                            <i data-lucide="package-search" class="w-12 h-12 text-orange-400 mb-4"></i>
+                            <h3 class="text-2xl font-bold text-white mb-2">아이디어 상품 제조</h3>
+                            <p class="text-slate-200">기획부터 생산까지 원스톱 솔루션</p>
+                            <span class="mt-6 text-white border-b border-white/50 pb-1 group-hover:border-orange-400 group-hover:text-orange-400 transition-all">자세히 보기</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
