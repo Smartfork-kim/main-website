@@ -163,13 +163,25 @@ class ProductsManager {
         this.imageInput = document.getElementById('product-image');
         this.imagePreview = document.getElementById('image-preview');
         this.previewImg = document.getElementById('preview-img');
+        this.editImageBtn = document.getElementById('edit-image-btn');
         this.titleInput = document.getElementById('product-title');
         this.descriptionInput = document.getElementById('product-description');
         this.categoryInput = document.getElementById('product-category');
         this.yearInput = document.getElementById('product-year');
         
+        // 이미지 편집 모달
+        this.cropModal = document.getElementById('image-crop-modal');
+        this.cropImage = document.getElementById('crop-image');
+        this.cropContainer = document.getElementById('crop-container');
+        this.closeCropModalBtn = document.getElementById('close-crop-modal-btn');
+        this.cropConfirmBtn = document.getElementById('crop-confirm-btn');
+        this.cropCancelBtn = document.getElementById('crop-cancel-btn');
+        
         this.grid = document.getElementById('products-grid');
         this.emptyMessage = document.getElementById('empty-message');
+        
+        this.cropper = null;
+        this.originalImageFile = null;
     }
 
     bindEvents() {
@@ -198,6 +210,13 @@ class ProductsManager {
         
         this.uploadBtn.addEventListener('click', () => this.imageInput.click());
         this.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
+        this.editImageBtn.addEventListener('click', () => this.openCropModal());
+        this.closeCropModalBtn.addEventListener('click', () => this.closeCropModal());
+        this.cropCancelBtn.addEventListener('click', () => this.closeCropModal());
+        this.cropConfirmBtn.addEventListener('click', () => this.applyCrop());
+        this.cropModal.addEventListener('click', (e) => {
+            if (e.target === this.cropModal) this.closeCropModal();
+        });
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
             this.handleSubmit();
@@ -288,6 +307,8 @@ class ProductsManager {
         this.form.reset();
         this.imagePreview.classList.add('hidden');
         this.currentEditId = null;
+        this.originalImageFile = null;
+        this.previewImg.src = '';
     }
 
     handleImageUpload(e) {
@@ -299,12 +320,102 @@ class ProductsManager {
             return;
         }
         
+        this.originalImageFile = file;
+        
         const reader = new FileReader();
         reader.onload = (e) => {
             this.previewImg.src = e.target.result;
             this.imagePreview.classList.remove('hidden');
+            lucide.createIcons();
         };
         reader.readAsDataURL(file);
+    }
+
+    openCropModal() {
+        if (!this.originalImageFile && !this.previewImg.src) {
+            alert('먼저 이미지를 선택해주세요.');
+            return;
+        }
+        
+        if (this.originalImageFile) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.cropImage.src = e.target.result;
+                this.initCropper();
+            };
+            reader.readAsDataURL(this.originalImageFile);
+        } else {
+            this.cropImage.src = this.previewImg.src;
+            this.initCropper();
+        }
+        
+        this.cropModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    initCropper() {
+        if (this.cropper) {
+            this.cropper.destroy();
+        }
+        
+        // 1:1 비율 고정 (정사각형)
+        this.cropper = new Cropper(this.cropImage, {
+            aspectRatio: 1 / 1,
+            viewMode: 1,
+            dragMode: 'move',
+            autoCropArea: 0.8,
+            restore: false,
+            guides: true,
+            center: true,
+            highlight: false,
+            cropBoxMovable: true,
+            cropBoxResizable: true,
+            toggleDragModeOnDblclick: false,
+        });
+    }
+
+    applyCrop() {
+        if (!this.cropper) return;
+        
+        const canvas = this.cropper.getCroppedCanvas({
+            width: 1000,
+            height: 1000,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        });
+        
+        canvas.toBlob((blob) => {
+            if (!blob) {
+                alert('이미지 편집에 실패했습니다.');
+                return;
+            }
+            
+            const editedFile = new File([blob], this.originalImageFile?.name || 'edited-image.jpg', {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+            });
+            
+            this.originalImageFile = editedFile;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.previewImg.src = e.target.result;
+                lucide.createIcons();
+            };
+            reader.readAsDataURL(editedFile);
+            
+            this.closeCropModal();
+        }, 'image/jpeg', 0.9);
+    }
+
+    closeCropModal() {
+        this.cropModal.style.display = 'none';
+        document.body.style.overflow = '';
+        
+        if (this.cropper) {
+            this.cropper.destroy();
+            this.cropper = null;
+        }
     }
 
     async handleSubmit() {
@@ -317,7 +428,10 @@ class ProductsManager {
         };
         
         try {
-            if (this.imageInput.files[0]) {
+            if (this.originalImageFile) {
+                const imageUrl = await this.uploadImage(this.originalImageFile);
+                productData.imageUrl = imageUrl;
+            } else if (this.imageInput.files[0]) {
                 const imageUrl = await this.uploadImage(this.imageInput.files[0]);
                 productData.imageUrl = imageUrl;
             } else if (this.currentEditId) {
