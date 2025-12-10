@@ -234,13 +234,13 @@ class CoursesManager {
                 <i data-lucide="unlock" class="w-4 h-4"></i>
                 관리자 모드 활성
             `;
-            this.adminModeBtn.className = 'px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2';
+            this.adminModeBtn.className = 'fixed bottom-6 right-6 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2 shadow-lg z-40';
         } else {
             this.adminModeBtn.innerHTML = `
                 <i data-lucide="lock" class="w-4 h-4"></i>
                 관리자 모드
             `;
-            this.adminModeBtn.className = 'px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2';
+            this.adminModeBtn.className = 'fixed bottom-6 right-6 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2 shadow-lg z-40';
         }
         
         lucide.createIcons();
@@ -257,9 +257,10 @@ class CoursesManager {
                 ...doc.data()
             }));
             
+            // 생성일 기준 최신순 정렬
             this.courses.sort((a, b) => {
                 if (a.createdAt && b.createdAt) {
-                    return b.createdAt.seconds - a.createdAt.seconds;
+                    return b.createdAt.seconds - a.createdAt.seconds; // 내림차순 (최신순)
                 }
                 return 0;
             });

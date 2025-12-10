@@ -231,13 +231,13 @@ class AwardsManager {
                 <i data-lucide="unlock" class="w-4 h-4"></i>
                 관리자 모드 활성
             `;
-            this.adminModeBtn.className = 'px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2';
+            this.adminModeBtn.className = 'fixed bottom-6 right-6 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2 shadow-lg z-40';
         } else {
             this.adminModeBtn.innerHTML = `
                 <i data-lucide="lock" class="w-4 h-4"></i>
                 관리자 모드
             `;
-            this.adminModeBtn.className = 'px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2';
+            this.adminModeBtn.className = 'fixed bottom-6 right-6 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2 shadow-lg z-40';
         }
         
         lucide.createIcons();
@@ -255,12 +255,11 @@ class AwardsManager {
                 ...doc.data()
             }));
             
-            // 수동으로 정렬 (createdAt 필드가 있는 경우)
+            // 연도순으로 정렬 (최신순)
             this.awards.sort((a, b) => {
-                if (a.createdAt && b.createdAt) {
-                    return b.createdAt.seconds - a.createdAt.seconds;
-                }
-                return 0;
+                const yearA = parseInt(a.year) || 0;
+                const yearB = parseInt(b.year) || 0;
+                return yearB - yearA; // 내림차순 (최신순)
             });
             
             this.render();
