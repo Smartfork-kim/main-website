@@ -552,7 +552,9 @@ class CoursesManager {
                         <span class="px-3 py-1 ${this.getLevelBadgeClass(course.level)} text-xs font-semibold rounded-full">${this.escapeHtml(course.level)}</span>
                     </div>
                     <h4 class="text-xl font-bold text-slate-900 mb-2">${this.escapeHtml(course.title)}</h4>
-                    <p class="text-slate-600 mb-4 whitespace-pre-wrap">${this.escapeHtml(course.description)}</p>
+                    <div class="mb-4">
+                        ${this.getDescriptionHTML(course)}
+                    </div>
                     <div class="flex items-center text-sm text-slate-500 mb-4">
                         <i data-lucide="book-open" class="w-4 h-4 mr-2"></i>
                         <span>총 강의 수: ${this.escapeHtml(course.total || '미정')}</span>
@@ -574,6 +576,48 @@ class CoursesManager {
         `).join('');
         
         lucide.createIcons();
+    }
+
+    getDescriptionHTML(course) {
+        const description = course.description || '';
+        const maxLength = 100;
+        
+        if (description.length <= maxLength) {
+            return `<p class="text-slate-600 whitespace-pre-wrap">${this.escapeHtml(description)}</p>`;
+        }
+        
+        const shortDesc = description.substring(0, maxLength) + '...';
+        const fullDesc = description;
+        
+        return `
+            <p id="course-desc-${course.id}" class="text-slate-600 whitespace-pre-wrap">${this.escapeHtml(shortDesc)}</p>
+            <p id="course-desc-full-${course.id}" class="text-slate-600 whitespace-pre-wrap hidden">${this.escapeHtml(fullDesc)}</p>
+            <button onclick="coursesManager.toggleDescription('${course.id}')" id="course-desc-btn-${course.id}" class="mt-2 text-brand hover:text-brand-dark font-semibold text-sm flex items-center gap-1 transition-colors">
+                <span>자세히 보기</span>
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </button>
+        `;
+    }
+
+    toggleDescription(courseId) {
+        const shortDesc = document.getElementById(`course-desc-${courseId}`);
+        const fullDesc = document.getElementById(`course-desc-full-${courseId}`);
+        const btn = document.getElementById(`course-desc-btn-${courseId}`);
+        
+        if (shortDesc && fullDesc && btn) {
+            if (shortDesc.classList.contains('hidden')) {
+                // 접기
+                shortDesc.classList.remove('hidden');
+                fullDesc.classList.add('hidden');
+                btn.innerHTML = '<span>자세히 보기</span><i data-lucide="chevron-down" class="w-4 h-4"></i>';
+            } else {
+                // 펼치기
+                shortDesc.classList.add('hidden');
+                fullDesc.classList.remove('hidden');
+                btn.innerHTML = '<span>접기</span><i data-lucide="chevron-up" class="w-4 h-4"></i>';
+            }
+            lucide.createIcons();
+        }
     }
 
     escapeHtml(text) {

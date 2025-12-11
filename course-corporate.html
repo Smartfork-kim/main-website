@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업 맞춤형 출강 | AI Idea Manufacturing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Noto Sans KR', 'sans-serif'] },
+                    colors: {
+                        brand: { light: '#fbb656', DEFAULT: '#f9a01a', dark: '#d88810', accent: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- 공통 컴포넌트 -->
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans overflow-x-hidden">
+    
+    <!-- Header Container -->
+    <div id="header-container" data-page="ai-courses"></div>
+
+    <main id="main-content" class="pt-20">
+        <!-- Hero Section -->
+        <section class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">기업 맞춤형 출강</h1>
+                </div>
+                
+                <!-- 이미지 -->
+                <div class="mb-12">
+                    <img src="images/courses/3.png" alt="기업 맞춤형 출강" class="w-full h-auto rounded-xl shadow-lg">
+                </div>
+
+                <!-- 소개 문구 -->
+                <div class="mb-12">
+                    <p class="text-2xl font-bold text-slate-900 mb-6">"우리 회사에 딱 맞는 AI 교육, 스마트포크가 직접 찾아갑니다."</p>
+                    <p class="text-lg text-slate-700 leading-relaxed">
+                        기업마다 산업군이 다르고, 해결해야 할 문제는 다릅니다. 사전 미팅을 통해 귀사의 업종(제조, 금융, 서비스 등)과 임직원의 역량을 분석하여, 즉시 현업 적용이 가능한 '맞춤형 DX(Digital Transformation) 솔루션'을 제공합니다.
+                    </p>
+                </div>
+
+                <!-- 교육 프로세스 -->
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-8">교육 프로세스</h2>
+                    <div class="space-y-6">
+                        <div class="bg-white border-l-4 border-brand p-6 rounded-r-lg shadow-sm">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">사전 진단</h3>
+                            <p class="text-slate-600">기업 니즈 파악 및 임직원 디지털 역량 진단</p>
+                        </div>
+                        <div class="bg-white border-l-4 border-brand p-6 rounded-r-lg shadow-sm">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">커리큘럼 설계</h3>
+                            <p class="text-slate-600">해당 직무(영업, HR, 개발 등)에 최적화된 AI 툴 및 프롬프트 선정</p>
+                        </div>
+                        <div class="bg-white border-l-4 border-brand p-6 rounded-r-lg shadow-sm">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">맞춤형 강의</h3>
+                            <p class="text-slate-600">이론 30% + 실습 70% 비율의 철저한 실무 중심 워크샵 진행</p>
+                        </div>
+                        <div class="bg-white border-l-4 border-brand p-6 rounded-r-lg shadow-sm">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">사후 관리</h3>
+                            <p class="text-slate-600">강의 자료 제공 및 Q&A 채널 운영을 통한 지속적 학습 지원</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 주요 출강 분야 및 기대 효과 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-slate-50 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i data-lucide="briefcase" class="w-6 h-6 text-brand"></i>
+                            주요 출강 분야
+                        </h3>
+                        <p class="text-slate-700">전사적 AI 리터러시 교육, 마케팅 팀을 위한 콘텐츠 제작 특강, 개발 팀을 위한 코딩 보조 AI 활용법 등</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i data-lucide="target" class="w-6 h-6 text-brand"></i>
+                            기대 효과
+                        </h3>
+                        <p class="text-slate-700">조직 전체의 업무 속도를 획기적으로 단축하고, AI를 활용해 창의적인 문제를 해결하는 조직 문화를 정착시킵니다.</p>
+                    </div>
+                </div>
+
+                <!-- 뒤로 가기 버튼 -->
+                <div class="text-center">
+                    <a href="ai-courses.html" class="inline-flex items-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark text-white font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                        강의 목록으로 돌아가기
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script type="module" src="main.js"></script>
+    <script>
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
+

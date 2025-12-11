@@ -20,7 +20,16 @@ function createHeader(activePage = 'home') {
                 { label: 'AI 강의', href: 'courses-showcase.html' }
             ]
         },
-        { id: 'ai-courses', label: 'AI Courses', href: 'ai-courses.html' },
+        { 
+            id: 'ai-courses', 
+            label: 'AI Courses', 
+            href: 'ai-courses.html',
+            submenu: [
+                { label: 'AI 활용 입문', href: 'course-intro.html' },
+                { label: 'AI 실전 활용 심화', href: 'course-advanced.html' },
+                { label: '기업 맞춤형 출강', href: 'course-corporate.html' }
+            ]
+        },
         { id: 'products', label: 'Products', href: 'product.html' },
         { id: 'contact', label: 'Contact', href: 'contact.html' }
     ];
