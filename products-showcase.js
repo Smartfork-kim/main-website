@@ -204,8 +204,21 @@ class ProductsManager {
         this.addBtn.addEventListener('click', () => this.openModal());
         this.closeModalBtn.addEventListener('click', () => this.closeModal());
         this.cancelBtn.addEventListener('click', () => this.closeModal());
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) this.closeModal();
+        
+        // 모달 배경 클릭 시 닫기 (드래그로 인한 실수 방지)
+        let modalMouseDownTarget = null;
+        this.modal.addEventListener('mousedown', (e) => {
+            if (e.target === this.modal) {
+                modalMouseDownTarget = this.modal;
+            } else {
+                modalMouseDownTarget = null;
+            }
+        });
+        this.modal.addEventListener('mouseup', (e) => {
+            if (e.target === this.modal && modalMouseDownTarget === this.modal) {
+                this.closeModal();
+            }
+            modalMouseDownTarget = null;
         });
         
         this.uploadBtn.addEventListener('click', () => this.imageInput.click());
@@ -525,7 +538,7 @@ class ProductsManager {
                 </div>
                 <div class="p-6">
                     <h4 class="text-xl font-bold text-slate-900 mb-2">${this.escapeHtml(product.title)}</h4>
-                    <p class="text-slate-600 mb-4">${this.escapeHtml(product.description)}</p>
+                    <p class="text-slate-600 mb-4 whitespace-pre-wrap">${this.escapeHtml(product.description)}</p>
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
                             <span class="flex items-center gap-1">

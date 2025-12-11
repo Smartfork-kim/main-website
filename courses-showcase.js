@@ -204,8 +204,21 @@ class CoursesManager {
         this.addBtn.addEventListener('click', () => this.openModal());
         this.closeModalBtn.addEventListener('click', () => this.closeModal());
         this.cancelBtn.addEventListener('click', () => this.closeModal());
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) this.closeModal();
+        
+        // 모달 배경 클릭 시 닫기 (드래그로 인한 실수 방지)
+        let modalMouseDownTarget = null;
+        this.modal.addEventListener('mousedown', (e) => {
+            if (e.target === this.modal) {
+                modalMouseDownTarget = this.modal;
+            } else {
+                modalMouseDownTarget = null;
+            }
+        });
+        this.modal.addEventListener('mouseup', (e) => {
+            if (e.target === this.modal && modalMouseDownTarget === this.modal) {
+                this.closeModal();
+            }
+            modalMouseDownTarget = null;
         });
         
         this.uploadBtn.addEventListener('click', () => this.imageInput.click());
@@ -539,7 +552,7 @@ class CoursesManager {
                         <span class="px-3 py-1 ${this.getLevelBadgeClass(course.level)} text-xs font-semibold rounded-full">${this.escapeHtml(course.level)}</span>
                     </div>
                     <h4 class="text-xl font-bold text-slate-900 mb-2">${this.escapeHtml(course.title)}</h4>
-                    <p class="text-slate-600 mb-4">${this.escapeHtml(course.description)}</p>
+                    <p class="text-slate-600 mb-4 whitespace-pre-wrap">${this.escapeHtml(course.description)}</p>
                     <div class="flex items-center text-sm text-slate-500 mb-4">
                         <i data-lucide="book-open" class="w-4 h-4 mr-2"></i>
                         <span>총 강의 수: ${this.escapeHtml(course.total || '미정')}</span>

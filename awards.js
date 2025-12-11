@@ -203,8 +203,21 @@ class AwardsManager {
         this.addBtn.addEventListener('click', () => this.openModal());
         this.closeModalBtn.addEventListener('click', () => this.closeModal());
         this.cancelBtn.addEventListener('click', () => this.closeModal());
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) this.closeModal();
+        
+        // 모달 배경 클릭 시 닫기 (드래그로 인한 실수 방지)
+        let modalMouseDownTarget = null;
+        this.modal.addEventListener('mousedown', (e) => {
+            if (e.target === this.modal) {
+                modalMouseDownTarget = this.modal;
+            } else {
+                modalMouseDownTarget = null;
+            }
+        });
+        this.modal.addEventListener('mouseup', (e) => {
+            if (e.target === this.modal && modalMouseDownTarget === this.modal) {
+                this.closeModal();
+            }
+            modalMouseDownTarget = null;
         });
         
         this.uploadBtn.addEventListener('click', () => this.imageInput.click());
@@ -539,7 +552,7 @@ class AwardsManager {
                 </div>
                 <div class="p-6">
                     <h4 class="text-xl font-bold text-slate-900 mb-2">${this.escapeHtml(award.title)}</h4>
-                    <p class="text-slate-600 mb-3">${this.escapeHtml(award.description)}</p>
+                    <p class="text-slate-600 mb-3 whitespace-pre-wrap">${this.escapeHtml(award.description)}</p>
                     <div class="flex items-center justify-between">
                         <div class="flex items-center text-sm text-slate-500">
                             <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>
