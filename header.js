@@ -39,22 +39,18 @@ function createHeader(activePage = 'home') {
         const activeClass = isActive ? 'text-brand font-semibold' : 'text-slate-600 hover:text-brand font-medium';
         
         if (item.submenu) {
-            // About 메뉴에 드롭다운 추가
+            // 메가 메뉴용 서브메뉴 ID 생성
+            const megaMenuId = `megamenu-${item.id}`;
             const submenuHTML = item.submenu.map(sub => 
-                `<a href="${sub.href}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand hover:text-white transition-colors rounded-md">${sub.label}</a>`
-            ).join('\n                        ');
+                `<a href="${sub.href}" class="block px-6 py-4 text-base text-slate-700 hover:bg-brand hover:text-white transition-all duration-200 rounded-lg font-medium">${sub.label}</a>`
+            ).join('\n                            ');
             
             return `
                     <div class="relative group">
-                        <a href="${item.href}" class="nav-link ${activeClass} transition-colors px-2 py-1 flex items-center gap-1">
+                        <a href="${item.href}" class="nav-link ${activeClass} transition-colors px-2 py-1 flex items-center gap-1" data-megamenu-trigger="${megaMenuId}">
                             ${item.label}
                             <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i>
                         </a>
-                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none group-hover:pointer-events-auto">
-                            <div class="bg-white rounded-lg shadow-lg border border-slate-200 py-2">
-                                ${submenuHTML}
-                            </div>
-                        </div>
                     </div>`;
         } else {
             return `<a href="${item.href}" class="nav-link ${activeClass} transition-colors px-2 py-1">${item.label}</a>`;
@@ -87,6 +83,25 @@ function createHeader(activePage = 'home') {
         }
     }).join('\n                ');
 
+    // 메가 메뉴 HTML 생성
+    const megaMenuHTML = menuItems
+        .filter(item => item.submenu)
+        .map(item => {
+            const megaMenuId = `megamenu-${item.id}`;
+            const submenuHTML = item.submenu.map(sub => 
+                `<a href="${sub.href}" class="block px-6 py-4 text-base text-slate-700 hover:bg-brand hover:text-white transition-all duration-200 rounded-lg font-medium">${sub.label}</a>`
+            ).join('\n                        ');
+            
+            return `
+            <div id="${megaMenuId}" class="megamenu-container fixed left-0 w-full bg-white/80 backdrop-blur-sm border-b border-slate-200 shadow-xl opacity-0 invisible pointer-events-none transition-all duration-300 z-40" style="top: 80px; transform: translateY(-10px);">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        ${submenuHTML}
+                    </div>
+                </div>
+            </div>`;
+        }).join('\n        ');
+
     return `
     <!-- Header -->
     <header id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white border-b border-slate-200">
@@ -115,7 +130,8 @@ function createHeader(activePage = 'home') {
                 ${mobileMenuHTML}
             </div>
         </div>
-    </header>`;
+    </header>
+    ${megaMenuHTML}`;
 }
 
 // 헤더 로드
@@ -158,6 +174,162 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+
+        // 메가 메뉴 표시/숨김 처리
+        const megaMenuTriggers = document.querySelectorAll('[data-megamenu-trigger]');
+        const megaMenus = document.querySelectorAll('.megamenu-container');
+        let hideTimeout = null;
+        let currentActiveTrigger = null;
+        
+        function hideAllMegaMenus() {
+            megaMenus.forEach(menu => {
+                menu.classList.add('opacity-0', 'invisible', 'pointer-events-none');
+                menu.style.transform = 'translateY(-10px)';
+            });
+            // 모든 메뉴 항목의 활성화 상태 제거
+            megaMenuTriggers.forEach(trigger => {
+                trigger.classList.remove('text-brand', 'font-semibold');
+                trigger.classList.add('text-slate-600', 'font-medium');
+            });
+            currentActiveTrigger = null;
+        }
+        
+        function showMegaMenu(megaMenu, trigger) {
+            // 기존 타이머 취소
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                hideTimeout = null;
+            }
+            
+            hideAllMegaMenus();
+            if (megaMenu) {
+                megaMenu.classList.remove('opacity-0', 'invisible', 'pointer-events-none');
+                megaMenu.style.transform = 'translateY(0)';
+            }
+            // 현재 메뉴 항목 활성화
+            if (trigger) {
+                trigger.classList.remove('text-slate-600', 'font-medium');
+                trigger.classList.add('text-brand', 'font-semibold');
+                currentActiveTrigger = trigger;
+            }
+        }
+        
+        function scheduleHide() {
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+            }
+            hideTimeout = setTimeout(() => {
+                // 현재 마우스가 메뉴 영역에 있는지 확인
+                const isOverMenu = Array.from(megaMenuTriggers).some(trigger => 
+                    trigger.matches(':hover')
+                ) || Array.from(megaMenus).some(menu => 
+                    menu.matches(':hover')
+                );
+                if (!isOverMenu) {
+                    hideAllMegaMenus();
+                }
+                hideTimeout = null;
+            }, 300); // 지연 시간을 300ms로 증가
+        }
+        
+        if (megaMenuTriggers.length > 0 && megaMenus.length > 0) {
+            megaMenuTriggers.forEach(trigger => {
+                const megaMenuId = trigger.getAttribute('data-megamenu-trigger');
+                const megaMenu = document.getElementById(megaMenuId);
+                
+                if (megaMenu) {
+                    // 메뉴 항목에 마우스 올리기
+                    trigger.addEventListener('mouseenter', (e) => {
+                        // 타이머 취소
+                        if (hideTimeout) {
+                            clearTimeout(hideTimeout);
+                            hideTimeout = null;
+                        }
+                        showMegaMenu(megaMenu, trigger);
+                    });
+                    
+                    // 메가 메뉴 영역에 마우스 올리기 - 타이머 취소
+                    megaMenu.addEventListener('mouseenter', () => {
+                        // 타이머 취소
+                        if (hideTimeout) {
+                            clearTimeout(hideTimeout);
+                            hideTimeout = null;
+                        }
+                        showMegaMenu(megaMenu, trigger);
+                    });
+                    
+                    // 메뉴 항목에서 마우스가 벗어나면
+                    trigger.addEventListener('mouseleave', (e) => {
+                        const relatedTarget = e.relatedTarget;
+                        // 메가 메뉴로 직접 이동하는 경우는 무시
+                        if (relatedTarget && megaMenu.contains(relatedTarget)) {
+                            return;
+                        }
+                        // 다른 메뉴 항목으로 이동하는 경우는 즉시 처리
+                        const targetTrigger = Array.from(megaMenuTriggers).find(t => 
+                            t !== trigger && (t.contains(relatedTarget) || t === relatedTarget)
+                        );
+                        if (targetTrigger) {
+                            const targetMegaMenuId = targetTrigger.getAttribute('data-megamenu-trigger');
+                            const targetMegaMenu = document.getElementById(targetMegaMenuId);
+                            if (targetMegaMenu) {
+                                showMegaMenu(targetMegaMenu, targetTrigger);
+                                return;
+                            }
+                        }
+                        // 그 외의 경우는 지연 후 숨기기
+                        scheduleHide();
+                    });
+                }
+            });
+
+            // 메가 메뉴에서 마우스가 벗어나면 숨기기
+            megaMenus.forEach(megaMenu => {
+                megaMenu.addEventListener('mouseleave', (e) => {
+                    const relatedTarget = e.relatedTarget;
+                    // 다른 메뉴 항목으로 이동하는 경우
+                    const targetTrigger = Array.from(megaMenuTriggers).find(trigger => 
+                        trigger.contains(relatedTarget) || trigger === relatedTarget
+                    );
+                    if (targetTrigger) {
+                        const targetMegaMenuId = targetTrigger.getAttribute('data-megamenu-trigger');
+                        const targetMegaMenu = document.getElementById(targetMegaMenuId);
+                        if (targetMegaMenu) {
+                            showMegaMenu(targetMegaMenu, targetTrigger);
+                            return;
+                        }
+                    }
+                    // 다른 메가 메뉴로 이동하는 경우
+                    const targetMegaMenu = Array.from(megaMenus).find(menu => 
+                        menu !== megaMenu && (menu.contains(relatedTarget) || menu === relatedTarget)
+                    );
+                    if (targetMegaMenu) {
+                        return; // 다른 메가 메뉴로 이동 중이므로 숨기지 않음
+                    }
+                    // 그 외의 경우는 지연 후 숨기기
+                    scheduleHide();
+                });
+            });
+            
+            // 헤더 영역 전체에서 마우스가 벗어나면 즉시 숨기기
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                navbar.addEventListener('mouseleave', (e) => {
+                    const relatedTarget = e.relatedTarget;
+                    // 메가 메뉴로 이동하는 경우는 무시
+                    const isMovingToMegaMenu = Array.from(megaMenus).some(menu => 
+                        menu.contains(relatedTarget) || menu === relatedTarget
+                    );
+                    if (!isMovingToMegaMenu) {
+                        if (hideTimeout) {
+                            clearTimeout(hideTimeout);
+                            hideTimeout = null;
+                        }
+                        hideAllMegaMenus();
+                    }
+                });
+            }
+        }
 
         // 스크롤 시 헤더 숨김/표시 기능
         const navbar = document.getElementById('navbar');
