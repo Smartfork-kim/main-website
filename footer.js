@@ -6,8 +6,11 @@ function createFooter() {
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div class="text-left">
                     <h4 class="text-white font-bold text-lg mb-3">회사명 : 스마트포크</h4>
+                    <p class="text-sm mb-1">대표이사 : 김상철, 유예찬</p>
                     <p class="text-sm mb-1">문의 메일 : <a href="mailto:signboardkr@gmail.com" class="hover:text-brand transition-colors">signboardkr@gmail.com</a></p>
-                    <p class="text-sm mb-3">사업자등록번호 : 760-87-01868</p>
+                    <p class="text-sm mb-1">전화번호 : <a href="tel:070-5220-1050" class="hover:text-brand transition-colors">070-5220-1050</a> <span class="text-slate-500">(평일 13:00~17:00)</span></p>
+                    <p class="text-sm mb-1">사업자등록번호 : 760-87-01868</p>
+                    <p class="text-sm mb-3">통신판매업신고 : 2024-고양덕양구-1120호</p>
                     <p class="text-sm text-slate-500">Copyright © 2025 SMART FORK Co.Ltd All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-6 text-sm">
