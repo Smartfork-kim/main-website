@@ -129,7 +129,7 @@
                 
                 <!-- 이미지 업로드 -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">강의 썸네일 <span class="text-xs text-slate-500">(권장: 1280×800px, 16:10 비율)</span></label>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">강의 썸네일 <span class="text-xs text-slate-500">(권장: 2480×3508px)</span></label>
                     <div class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-brand transition-colors">
                         <input type="file" id="course-image" accept="image/*" class="hidden">
                         <div id="image-preview" class="mb-4 hidden">
@@ -170,22 +170,10 @@
                     </select>
                 </div>
 
-                <!-- 플랫폼 -->
+                <!-- 총 강의 수 -->
                 <div>
-                    <label for="course-platform" class="block text-sm font-semibold text-slate-700 mb-2">플랫폼</label>
-                    <input type="text" id="course-platform" maxlength="50" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand" placeholder="예: 인프런, 유데미, 기업 직강">
-                </div>
-
-                <!-- 수강생 수 -->
-                <div>
-                    <label for="course-students" class="block text-sm font-semibold text-slate-700 mb-2">수강생 수</label>
-                    <input type="text" id="course-students" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand" placeholder="예: 1,000+">
-                </div>
-
-                <!-- 강의 시간 -->
-                <div>
-                    <label for="course-duration" class="block text-sm font-semibold text-slate-700 mb-2">강의 시간</label>
-                    <input type="text" id="course-duration" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand" placeholder="예: 4시간">
+                    <label for="course-total" class="block text-sm font-semibold text-slate-700 mb-2">총 강의 수 *</label>
+                    <input type="text" id="course-total" required class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand" placeholder="예: 50+">
                 </div>
 
                 <!-- 버튼 -->
@@ -205,7 +193,7 @@
     <div id="image-crop-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] items-center justify-center p-4" style="display: none;">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div class="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-slate-800">이미지 편집 (16:10 비율)</h3>
+                <h3 class="text-xl font-bold text-slate-800">이미지 편집 (2480×3508 비율)</h3>
                 <button id="close-crop-modal-btn" class="p-2 hover:bg-slate-100 rounded-lg transition-colors">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>

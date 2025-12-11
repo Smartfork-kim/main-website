@@ -167,9 +167,7 @@ class CoursesManager {
         this.titleInput = document.getElementById('course-title');
         this.descriptionInput = document.getElementById('course-description');
         this.levelInput = document.getElementById('course-level');
-        this.platformInput = document.getElementById('course-platform');
-        this.studentsInput = document.getElementById('course-students');
-        this.durationInput = document.getElementById('course-duration');
+        this.totalInput = document.getElementById('course-total');
         
         // 이미지 편집 모달
         this.cropModal = document.getElementById('image-crop-modal');
@@ -284,9 +282,7 @@ class CoursesManager {
             this.titleInput.value = course.title;
             this.descriptionInput.value = course.description;
             this.levelInput.value = course.level || '입문';
-            this.platformInput.value = course.platform || '';
-            this.studentsInput.value = course.students || '';
-            this.durationInput.value = course.duration || '';
+            this.totalInput.value = course.total || '';
             
             if (course.imageUrl) {
                 this.previewImg.src = course.imageUrl;
@@ -363,9 +359,9 @@ class CoursesManager {
             this.cropper.destroy();
         }
         
-        // 16:10 비율 고정
+        // 2480×3508 비율 고정
         this.cropper = new Cropper(this.cropImage, {
-            aspectRatio: 16 / 10,
+            aspectRatio: 2480 / 3508,
             viewMode: 1,
             dragMode: 'move',
             autoCropArea: 0.8,
@@ -383,8 +379,8 @@ class CoursesManager {
         if (!this.cropper) return;
         
         const canvas = this.cropper.getCroppedCanvas({
-            width: 1280,
-            height: 800,
+            width: 2480,
+            height: 3508,
             imageSmoothingEnabled: true,
             imageSmoothingQuality: 'high',
         });
@@ -428,9 +424,7 @@ class CoursesManager {
             title: this.titleInput.value.trim(),
             description: this.descriptionInput.value.trim(),
             level: this.levelInput.value,
-            platform: this.platformInput.value.trim() || '미정',
-            students: this.studentsInput.value.trim() || '0',
-            duration: this.durationInput.value.trim() || '미정',
+            total: this.totalInput.value.trim(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
         
@@ -529,9 +523,9 @@ class CoursesManager {
         
         this.grid.innerHTML = this.courses.map(course => `
             <div class="course-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-2xl transition-all duration-300">
-                <div class="aspect-[16/10] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
+                <div class="aspect-[2480/3508] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
                     ${course.imageUrl ? 
-                        `<img src="${course.imageUrl}" alt="${this.escapeHtml(course.title)}" class="w-full h-full object-cover">` :
+                        `<img src="${course.imageUrl}" alt="${this.escapeHtml(course.title)}" class="w-full h-full object-contain">` :
                         `<div class="flex items-center justify-center h-full">
                             <div class="text-center p-8">
                                 <div class="text-6xl mb-4">🎓</div>
@@ -546,18 +540,9 @@ class CoursesManager {
                     </div>
                     <h4 class="text-xl font-bold text-slate-900 mb-2">${this.escapeHtml(course.title)}</h4>
                     <p class="text-slate-600 mb-4">${this.escapeHtml(course.description)}</p>
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-slate-500">
-                            <i data-lucide="users" class="w-4 h-4 mr-2"></i>
-                            <span>수강생 ${this.escapeHtml(course.students)}</span>
-                        </div>
-                        <div class="flex items-center text-sm text-slate-500">
-                            <i data-lucide="clock" class="w-4 h-4 mr-2"></i>
-                            <span>${this.escapeHtml(course.duration)}</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded">${this.escapeHtml(course.platform)}</span>
-                        </div>
+                    <div class="flex items-center text-sm text-slate-500 mb-4">
+                        <i data-lucide="book-open" class="w-4 h-4 mr-2"></i>
+                        <span>총 강의 수: ${this.escapeHtml(course.total || '미정')}</span>
                     </div>
                     ${isAdmin ? `
                     <div class="flex gap-2 pt-4 border-t border-slate-200">
