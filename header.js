@@ -93,7 +93,7 @@ function createHeader(activePage = 'home') {
             ).join('\n                        ');
             
             return `
-            <div id="${megaMenuId}" class="megamenu-container fixed left-0 w-full bg-white/80 backdrop-blur-sm border-b border-slate-200 shadow-xl opacity-0 invisible pointer-events-none transition-all duration-300 z-40" style="top: 80px; transform: translateY(-10px);">
+            <div id="${megaMenuId}" class="megamenu-container fixed left-0 w-full bg-white/90 backdrop-blur-sm border-b border-slate-200 shadow-xl opacity-0 invisible pointer-events-none transition-all duration-300 z-40" style="top: 80px; transform: translateY(-10px);">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         ${submenuHTML}
