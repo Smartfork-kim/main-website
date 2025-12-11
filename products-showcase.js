@@ -544,7 +544,7 @@ class ProductsManager {
         this.emptyMessage.classList.add('hidden');
         
         this.grid.innerHTML = this.products.map(product => `
-            <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-2xl transition-all duration-300 ${!isAdmin ? 'cursor-pointer' : ''}" onclick="${!isAdmin ? `productsManager.handleProductClick(${JSON.stringify(product).replace(/"/g, '&quot;')}, event)` : ''}">
+            <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-2xl transition-all duration-300 ${!isAdmin ? 'cursor-pointer' : ''} flex flex-col" onclick="${!isAdmin ? `productsManager.handleProductClick(${JSON.stringify(product).replace(/"/g, '&quot;')}, event)` : ''}">
                 <div class="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
                     ${product.imageUrl ? 
                         `<img src="${product.imageUrl}" alt="${this.escapeHtml(product.title)}" class="w-full h-full object-cover">` :
@@ -556,9 +556,9 @@ class ProductsManager {
                         </div>`
                     }
                 </div>
-                <div class="p-6">
+                <div class="p-6 flex flex-col flex-grow">
                     <h4 class="text-xl font-bold text-slate-900 mb-2">${this.escapeHtml(product.title)}</h4>
-                    <p class="text-slate-600 mb-4 whitespace-pre-wrap">${this.escapeHtml(product.description)}</p>
+                    <p class="text-slate-600 mb-4 whitespace-pre-wrap flex-grow">${this.escapeHtml(product.description)}</p>
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
                             <span class="flex items-center gap-1">
@@ -572,7 +572,7 @@ class ProductsManager {
                         </div>
                     </div>
                     ${!isAdmin && product.url ? `
-                    <div class="flex items-center justify-center pt-4 border-t border-slate-200">
+                    <div class="flex items-center justify-center pt-4 border-t border-slate-200 mt-auto">
                         <span class="text-brand font-semibold text-sm flex items-center gap-2">
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                             상품 보러가기
@@ -580,7 +580,7 @@ class ProductsManager {
                     </div>
                     ` : ''}
                     ${!isAdmin && !product.url ? `
-                    <div class="flex items-center justify-center pt-4 border-t border-slate-200">
+                    <div class="flex items-center justify-center pt-4 border-t border-slate-200 mt-auto">
                         <span class="text-slate-600 font-semibold text-sm flex items-center gap-2">
                             <i data-lucide="mail" class="w-4 h-4"></i>
                             문의하기
@@ -588,7 +588,7 @@ class ProductsManager {
                     </div>
                     ` : ''}
                     ${isAdmin ? `
-                    <div class="flex gap-2 pt-4 border-t border-slate-200">
+                    <div class="flex gap-2 pt-4 border-t border-slate-200 mt-auto">
                         <button onclick="productsManager.openModal(${JSON.stringify(product).replace(/"/g, '&quot;')})" class="flex-1 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
                             <i data-lucide="edit-2" class="w-4 h-4"></i>
                             수정
