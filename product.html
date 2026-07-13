@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상품 제작 | AI Idea Manufacturing</title>
+    <title>상품 제작 | SMARTFORK 아이디어 제조·판촉물 제작</title>
+    <meta name="description" content="스마트포크는 아이디어 상품, 판촉물, 기업·기관 맞춤 굿즈를 기획부터 제조, 납품까지 연결하는 상품 제작 파트너입니다.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/logo/logo2.png">
@@ -17,6 +18,9 @@
                     fontFamily: { sans: ['Noto Sans KR', 'sans-serif'] },
                     colors: {
                         brand: { light: '#fbb656', DEFAULT: '#f9a01a', dark: '#d88810', accent: '#0f172a' }
+                    },
+                    boxShadow: {
+                        glow: '0 24px 80px rgba(249, 160, 26, 0.24)'
                     }
                 }
             }
@@ -37,73 +41,209 @@
     <div id="header-container" data-page="products"></div>
 
     <main id="main-content" class="pt-20">
-        <section class="bg-slate-900 text-white py-24 text-center">
-            <div class="max-w-4xl mx-auto px-4">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6">Idea Manufacturing</h1>
-                <p class="text-xl text-slate-300">아이디어를 손에 잡히는 상품으로. 기획부터 제조, 납품까지.</p>
-            </div>
-        </section>
-
-        <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-16">
-                <h2 class="text-3xl font-bold mb-8 text-center">Our Portfolio</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- 1번: 해운대 북극곰 축제 서핑판초 -->
-                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg cursor-pointer gsap-fade-up">
-                        <img src="images/products/product-1.webp" alt="Surfing Poncho" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent flex flex-col justify-end p-6">
-                            <h3 class="text-white text-2xl font-bold mb-2">해운대 북극곰 축제 서핑판초</h3>
-                            <p class="text-slate-200 text-base">축제 특화 커스텀 굿즈</p>
-                        </div>
-                    </div>
-                    
-                    <!-- 2번: 제주첨단과학기술단지 카본 우산 -->
-                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg cursor-pointer gsap-fade-up">
-                        <img src="images/products/product-2.webp" alt="Umbrella" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent flex flex-col justify-end p-6">
-                            <h3 class="text-white text-2xl font-bold mb-2">제주첨단과학기술단지 카본 우산</h3>
-                            <p class="text-slate-200 text-base">VIP 행사용 프리미엄 판촉물</p>
-                        </div>
-                    </div>
-                    
-                    <!-- 3번: 마사회 모임 맞춤 커스텀 제작 -->
-                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg cursor-pointer gsap-fade-up">
-                        <img src="images/products/product-3.webp" alt="Custom Towel" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent flex flex-col justify-end p-6">
-                            <h3 class="text-white text-2xl font-bold mb-2">마사회 모임 맞춤 커스텀 제작</h3>
-                            <p class="text-slate-200 text-base">단체 맞춤형 제품 솔루션</p>
-                        </div>
-                    </div>
-                    
-                    <!-- 4번: What's Next? -->
-                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg cursor-pointer gsap-fade-up bg-brand">
-                        <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                            <p class="text-white text-lg font-medium mb-3">What's Next?</p>
-                            <div class="mb-4">
-                                <i data-lucide="sparkles" class="w-16 h-16 text-white"></i>
-                            </div>
-                            <h3 class="text-white text-2xl font-bold mb-2">판촉상품 제작 경험 다수 보유</h3>
-                            <p class="text-white text-base mb-6 leading-relaxed">
-                                어떤 제품이든 괜찮습니다.<br>
-                                아이디어만 있다면<br>
-                                저희가 현실로 만들어드립니다.
-                            </p>
-                            <a href="contact.html" class="inline-block px-6 py-2 bg-white text-brand font-semibold rounded-full hover:bg-slate-100 transition-colors">
-                                문의하기
+        <section class="relative overflow-hidden bg-slate-950 text-white">
+            <div class="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_top_left,_#f9a01a,_transparent_28%),radial-gradient(circle_at_bottom_right,_#38bdf8,_transparent_24%)]"></div>
+            <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-50 to-transparent"></div>
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+                <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
+                    <div class="gsap-fade-up">
+                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 text-brand-light text-sm font-semibold backdrop-blur">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i>
+                            AI Idea Manufacturing
+                        </span>
+                        <h1 class="mt-6 text-4xl md:text-6xl font-black tracking-tight leading-tight">
+                            아이디어를<br class="hidden sm:block">
+                            <span class="text-brand-light">팔리는 상품</span>으로 만듭니다
+                        </h1>
+                        <p class="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl">
+                            스마트포크는 판촉물, 기관 굿즈, 자체 개발 아이디어 상품을 기획부터 샘플링, 제조, 납품까지 한 번에 연결합니다.
+                        </p>
+                        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                            <a href="contact.html" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-brand text-white font-bold shadow-glow hover:bg-brand-dark transition-all hover:-translate-y-0.5">
+                                제작 상담하기
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
                             </a>
+                            <a href="#portfolio" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white/10 border border-white/15 text-white font-bold hover:bg-white/15 transition-all">
+                                제작 사례 보기
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="gsap-fade-up lg:pl-8">
+                        <div class="relative rounded-[2rem] bg-white/10 border border-white/15 p-5 backdrop-blur-xl shadow-2xl">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="rounded-3xl bg-white text-slate-900 p-6 min-h-[150px] flex flex-col justify-between">
+                                    <i data-lucide="factory" class="w-9 h-9 text-brand"></i>
+                                    <div>
+                                        <p class="text-4xl font-black">50+</p>
+                                        <p class="text-sm text-slate-600 font-medium">자체 개발 상품</p>
+                                    </div>
+                                </div>
+                                <div class="rounded-3xl bg-brand text-white p-6 min-h-[150px] flex flex-col justify-between">
+                                    <i data-lucide="badge-check" class="w-9 h-9"></i>
+                                    <div>
+                                        <p class="text-4xl font-black">기관</p>
+                                        <p class="text-sm text-white/85 font-medium">행사·단체 맞춤 제작</p>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 rounded-3xl overflow-hidden bg-slate-900 border border-white/10">
+                                    <img src="images/products/product-2.webp" alt="스마트포크 맞춤 제작 상품 대표 이미지" class="w-full h-52 object-cover opacity-90">
+                                    <div class="p-5 flex items-center justify-between gap-4">
+                                        <div>
+                                            <p class="font-bold">기획 → 제작 → 납품</p>
+                                            <p class="text-sm text-slate-300">브랜드 목적에 맞춘 제조 파트너</p>
+                                        </div>
+                                        <span class="shrink-0 w-11 h-11 rounded-full bg-white text-brand flex items-center justify-center">
+                                            <i data-lucide="package-check" class="w-5 h-5"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="bg-slate-100 rounded-3xl p-12 text-center">
-                <h3 class="text-2xl font-bold mb-4">50+ 자체 개발 아이디어 상품 보유</h3>
-                <p class="text-slate-600 max-w-5xl mx-auto mb-8">
-                    단순 제작 대행뿐만 아니라, 우리가 직접 기획하고 개발한 50여 종의 특허/실용신안 아이디어 상품을 도매 공급합니다.
+        <section class="py-12 md:py-16 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="gsap-fade-up rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+                        <i data-lucide="lightbulb" class="w-8 h-8 text-brand mb-4"></i>
+                        <h2 class="text-lg font-bold mb-2">아이디어 기획</h2>
+                        <p class="text-slate-600 leading-relaxed">목적, 예산, 행사 성격에 맞는 상품 콘셉트와 구성안을 제안합니다.</p>
+                    </div>
+                    <div class="gsap-fade-up rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+                        <i data-lucide="pen-tool" class="w-8 h-8 text-brand mb-4"></i>
+                        <h2 class="text-lg font-bold mb-2">커스텀 디자인</h2>
+                        <p class="text-slate-600 leading-relaxed">로고, 메시지, 패키징까지 브랜드 경험이 남는 형태로 다듬습니다.</p>
+                    </div>
+                    <div class="gsap-fade-up rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+                        <i data-lucide="truck" class="w-8 h-8 text-brand mb-4"></i>
+                        <h2 class="text-lg font-bold mb-2">제조·납품 관리</h2>
+                        <p class="text-slate-600 leading-relaxed">샘플 확인부터 생산 일정, 납품까지 실무 중심으로 관리합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center gsap-fade-up">
+                <span class="inline-flex px-4 py-2 rounded-full bg-brand/10 text-brand font-bold text-sm">Portfolio</span>
+                <h2 class="mt-4 text-3xl md:text-5xl font-black tracking-tight">제작 경험으로 증명합니다</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                    축제, 공공기관, 기업 행사, 모임 굿즈까지 — 필요한 목적에 맞춰 상품성을 갖춘 결과물로 제작합니다.
                 </p>
-                <a href="contact.html" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-brand hover:bg-brand-dark transition-colors">
-                    문의하기
-                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="portfolio-card group relative overflow-hidden rounded-3xl bg-white shadow-lg border border-slate-200 md:col-span-2 gsap-fade-up">
+                    <div class="relative h-80 md:h-[430px] overflow-hidden">
+                        <img src="images/products/product-1.webp" alt="해운대 북극곰 축제 서핑판초" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent"></div>
+                        <div class="absolute left-6 right-6 bottom-6 text-white">
+                            <span class="inline-flex px-3 py-1 rounded-full bg-white/15 backdrop-blur text-sm font-semibold mb-3">축제 굿즈</span>
+                            <h3 class="text-2xl md:text-3xl font-black mb-2">해운대 북극곰 축제 서핑판초</h3>
+                            <p class="text-slate-200 leading-relaxed">행사 성격과 현장 사용성을 반영한 커스텀 판초 제작 사례</p>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="portfolio-card group relative overflow-hidden rounded-3xl bg-white shadow-lg border border-slate-200 gsap-fade-up">
+                    <div class="relative h-80 md:h-[430px] overflow-hidden">
+                        <img src="images/products/product-2.webp" alt="제주첨단과학기술단지 카본 우산" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/15 to-transparent"></div>
+                        <div class="absolute left-6 right-6 bottom-6 text-white">
+                            <span class="inline-flex px-3 py-1 rounded-full bg-white/15 backdrop-blur text-sm font-semibold mb-3">프리미엄 판촉물</span>
+                            <h3 class="text-2xl font-black mb-2">제주첨단과학기술단지 카본 우산</h3>
+                            <p class="text-slate-200 leading-relaxed">VIP 행사용으로 적합한 고급 소재 기반 맞춤 제작</p>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="portfolio-card group relative overflow-hidden rounded-3xl bg-white shadow-lg border border-slate-200 gsap-fade-up">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="images/products/product-3.webp" alt="마사회 모임 맞춤 커스텀 제작" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent"></div>
+                        <div class="absolute left-6 right-6 bottom-6 text-white">
+                            <span class="inline-flex px-3 py-1 rounded-full bg-white/15 backdrop-blur text-sm font-semibold mb-3">단체 맞춤</span>
+                            <h3 class="text-2xl font-black mb-2">마사회 모임 맞춤 커스텀 제작</h3>
+                            <p class="text-slate-200 leading-relaxed">단체 니즈에 맞춘 제품 구성과 커스텀 솔루션</p>
+                        </div>
+                    </div>
+                </article>
+                
+                <div class="md:col-span-2 rounded-3xl bg-slate-900 text-white p-8 md:p-10 shadow-xl gsap-fade-up relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-64 h-64 bg-brand/30 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="relative grid md:grid-cols-[1fr_auto] gap-8 items-center">
+                        <div>
+                            <span class="inline-flex items-center gap-2 text-brand-light font-bold mb-4">
+                                <i data-lucide="wand-sparkles" class="w-5 h-5"></i>
+                                Custom Manufacturing
+                            </span>
+                            <h3 class="text-3xl md:text-4xl font-black mb-4">다음 제작 사례는<br class="hidden sm:block"> 우리 브랜드가 될 수 있습니다</h3>
+                            <p class="text-slate-300 leading-relaxed max-w-2xl">
+                                제품 종류가 정해지지 않았어도 괜찮습니다. 예산, 납기, 대상 고객, 행사 목적을 알려주시면 제작 가능한 방향부터 정리해드립니다.
+                            </p>
+                        </div>
+                        <a href="contact.html" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-brand text-white font-bold hover:bg-brand-dark transition-all hover:-translate-y-0.5">
+                            견적·제작 문의
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white border-y border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 items-start">
+                    <div class="gsap-fade-up lg:sticky lg:top-28">
+                        <span class="inline-flex px-4 py-2 rounded-full bg-brand/10 text-brand font-bold text-sm">Process</span>
+                        <h2 class="mt-4 text-3xl md:text-4xl font-black tracking-tight">상담부터 납품까지<br>흐름이 명확합니다</h2>
+                        <p class="mt-4 text-slate-600 leading-relaxed">처음 제작하는 고객도 진행 상황을 이해할 수 있도록 단계별로 안내합니다.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="gsap-fade-up flex gap-5 rounded-2xl bg-slate-50 border border-slate-200 p-6">
+                            <span class="shrink-0 w-11 h-11 rounded-full bg-brand text-white flex items-center justify-center font-black">1</span>
+                            <div><h3 class="font-bold text-xl mb-1">목적·예산 상담</h3><p class="text-slate-600">제작 수량, 납기, 사용 목적, 브랜드 톤을 먼저 정리합니다.</p></div>
+                        </div>
+                        <div class="gsap-fade-up flex gap-5 rounded-2xl bg-slate-50 border border-slate-200 p-6">
+                            <span class="shrink-0 w-11 h-11 rounded-full bg-brand text-white flex items-center justify-center font-black">2</span>
+                            <div><h3 class="font-bold text-xl mb-1">상품 제안·디자인 조율</h3><p class="text-slate-600">가능한 상품군과 커스텀 방식을 제안하고 디자인 방향을 확정합니다.</p></div>
+                        </div>
+                        <div class="gsap-fade-up flex gap-5 rounded-2xl bg-slate-50 border border-slate-200 p-6">
+                            <span class="shrink-0 w-11 h-11 rounded-full bg-brand text-white flex items-center justify-center font-black">3</span>
+                            <div><h3 class="font-bold text-xl mb-1">샘플·제작·검수</h3><p class="text-slate-600">필요 시 샘플 확인 후 생산하고, 납품 전 품질과 수량을 점검합니다.</p></div>
+                        </div>
+                        <div class="gsap-fade-up flex gap-5 rounded-2xl bg-slate-50 border border-slate-200 p-6">
+                            <span class="shrink-0 w-11 h-11 rounded-full bg-brand text-white flex items-center justify-center font-black">4</span>
+                            <div><h3 class="font-bold text-xl mb-1">납품·후속 제안</h3><p class="text-slate-600">행사 일정에 맞춰 납품하고, 반복 제작이나 후속 상품까지 연결합니다.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative overflow-hidden bg-gradient-to-br from-brand to-brand-dark rounded-[2rem] p-8 md:p-12 text-center text-white shadow-glow gsap-fade-up">
+                <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_20%,_white,_transparent_22%),radial-gradient(circle_at_80%_80%,_white,_transparent_18%)]"></div>
+                <div class="relative">
+                    <p class="font-bold text-white/85 mb-3">SMARTFORK PRODUCT STUDIO</p>
+                    <h2 class="text-3xl md:text-5xl font-black mb-5">50+ 자체 개발 아이디어 상품 보유</h2>
+                    <p class="text-white/90 max-w-4xl mx-auto mb-8 text-lg leading-relaxed">
+                        단순 제작 대행뿐만 아니라, 직접 기획하고 개발한 아이디어 상품을 기반으로 기업·기관·단체에 맞는 제작 방향을 제안합니다.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="contact.html" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-brand font-black hover:bg-slate-100 transition-all hover:-translate-y-0.5">
+                            제작 상담 시작하기
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                        <a href="mailto:signboardkr@gmail.com" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/10 border border-white/25 text-white font-bold hover:bg-white/15 transition-all">
+                            signboardkr@gmail.com
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
