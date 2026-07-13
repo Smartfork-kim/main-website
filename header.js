@@ -25,11 +25,14 @@ function createHeader(activePage = 'home') {
             label: 'AI Courses', 
             href: 'ai-courses.html',
             submenu: [
+                { label: '스마트포크 AI 플랫폼', href: 'https://smartfork.ai.kr/', external: true },
+                { label: '전체 강의 둘러보기', href: 'https://smartfork.ai.kr/courses', external: true },
                 { label: 'AI 활용 입문', href: 'course-intro.html' },
                 { label: 'AI 실전 활용 심화', href: 'course-advanced.html' },
                 { label: '기업 맞춤형 출강', href: 'course-corporate.html' }
             ]
         },
+        { id: 'ai-platform', label: 'AI Platform', href: 'https://smartfork.ai.kr/', external: true },
         { id: 'products', label: 'Products', href: 'product.html' },
         { id: 'contact', label: 'Contact', href: 'contact.html' }
     ];
@@ -42,7 +45,7 @@ function createHeader(activePage = 'home') {
             // 메가 메뉴용 서브메뉴 ID 생성
             const megaMenuId = `megamenu-${item.id}`;
             const submenuHTML = item.submenu.map(sub => 
-                `<a href="${sub.href}" class="block px-6 py-4 text-base text-slate-700 hover:bg-brand hover:text-white transition-all duration-200 rounded-lg font-medium">${sub.label}</a>`
+                `<a href="${sub.href}" ${sub.external ? 'target="_blank" rel="noopener"' : ''} class="block px-6 py-4 text-base text-slate-700 hover:bg-brand hover:text-white transition-all duration-200 rounded-lg font-medium">${sub.label}${sub.external ? ' ↗' : ''}</a>`
             ).join('\n                            ');
             
             return `
@@ -53,7 +56,7 @@ function createHeader(activePage = 'home') {
                         </a>
                     </div>`;
         } else {
-            return `<a href="${item.href}" class="nav-link ${activeClass} transition-colors px-2 py-1">${item.label}</a>`;
+            return `<a href="${item.href}" ${item.external ? 'target="_blank" rel="noopener"' : ''} class="nav-link ${activeClass} transition-colors px-2 py-1">${item.label}${item.external ? ' ↗' : ''}</a>`;
         }
     }).join('\n                    ');
 
@@ -65,7 +68,7 @@ function createHeader(activePage = 'home') {
             // 모바일 메뉴에 서브메뉴 추가
             const submenuId = `mobile-submenu-${item.id}`;
             const submenuHTML = item.submenu.map(sub => 
-                `<a href="${sub.href}" class="block px-6 py-2 text-sm text-slate-600 hover:text-brand hover:bg-slate-50 rounded-md">${sub.label}</a>`
+                `<a href="${sub.href}" ${sub.external ? 'target="_blank" rel="noopener"' : ''} class="block px-6 py-2 text-sm text-slate-600 hover:text-brand hover:bg-slate-50 rounded-md">${sub.label}${sub.external ? ' ↗' : ''}</a>`
             ).join('\n                    ');
             
             return `
@@ -79,7 +82,7 @@ function createHeader(activePage = 'home') {
                     </div>
                 </div>`;
         } else {
-            return `<a href="${item.href}" class="block px-3 py-3 rounded-md text-base font-medium ${activeClass}">${item.label}</a>`;
+            return `<a href="${item.href}" ${item.external ? 'target="_blank" rel="noopener"' : ''} class="block px-3 py-3 rounded-md text-base font-medium ${activeClass}">${item.label}${item.external ? ' ↗' : ''}</a>`;
         }
     }).join('\n                ');
 
@@ -89,13 +92,13 @@ function createHeader(activePage = 'home') {
         .map(item => {
             const megaMenuId = `megamenu-${item.id}`;
             const submenuHTML = item.submenu.map(sub => 
-                `<a href="${sub.href}" class="block px-6 py-4 text-base text-slate-700 hover:bg-brand hover:text-white transition-all duration-200 rounded-lg font-medium">${sub.label}</a>`
+                `<a href="${sub.href}" ${sub.external ? 'target="_blank" rel="noopener"' : ''} class="block px-6 py-4 text-base text-slate-700 hover:bg-brand hover:text-white transition-all duration-200 rounded-lg font-medium">${sub.label}${sub.external ? ' ↗' : ''}</a>`
             ).join('\n                        ');
             
             return `
             <div id="${megaMenuId}" class="megamenu-container fixed left-0 w-full bg-white/90 backdrop-blur-sm border-b border-slate-200 shadow-xl opacity-0 invisible pointer-events-none transition-all duration-300 z-40" style="top: 80px; transform: translateY(-10px);">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                         ${submenuHTML}
                     </div>
                 </div>

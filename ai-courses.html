@@ -3,11 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 강의 서비스 | AI Idea Manufacturing</title>
+    <title>스마트포크 AI 강의 플랫폼 | AI 에이전트·바이브코딩·생성형 AI 교육</title>
+    <meta name="description" content="스마트포크 AI 강의 플랫폼은 와디즈에서 검증된 AI 강의를 자체 유통하는 실전 학습 채널입니다. AI 에이전트, Claude Code, OpenClaw, 바이브코딩, AI 영상·이미지·PPT 강의를 제공합니다.">
+    <link rel="canonical" href="https://smartfork.kr/ai-courses.html">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smartfork.kr/ai-courses.html">
+    <meta property="og:title" content="스마트포크 AI 강의 플랫폼 | 실전 AI 교육 로드맵">
+    <meta property="og:description" content="와디즈에서 검증된 스마트포크 AI 강의를 자체 플랫폼에서 직접 만나보세요. 35개 강의, 7개 카테고리, 맞춤 학습 진단과 커뮤니티까지 제공합니다.">
+    <meta property="og:image" content="https://smartfork.kr/og-image.jpg">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/logo/logo2.png">
     <link rel="apple-touch-icon" href="images/logo/logo2.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -30,73 +40,162 @@
     <!-- 공통 컴포넌트 -->
     <script src="header.js"></script>
     <script src="footer.js"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "스마트포크 AI 실전 학습 플랫폼",
+      "url": "https://smartfork.ai.kr/",
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "주식회사 스마트포크",
+        "url": "https://smartfork.kr/"
+      },
+      "description": "와디즈에서 검증된 생성형 AI, AI 에이전트, 바이브코딩 강의를 스마트포크가 직접 유통·운영하는 실전 학습 플랫폼"
+    }
+    </script>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans overflow-x-hidden">
+<body class="bg-slate-50 text-slate-800 font-sans overflow-x-hidden selection:bg-brand selection:text-white">
     
     <!-- Header Container -->
     <div id="header-container" data-page="ai-courses"></div>
 
     <main id="main-content" class="pt-20">
-        <!-- Hero Section with Video Background -->
-        <section class="relative text-white text-center overflow-hidden" style="aspect-ratio: 16/9; width: 100%;">
-            <!-- 배경 영상 -->
-            <div class="absolute inset-0 w-full h-full">
-                <video autoplay loop muted playsinline class="w-full h-full object-cover">
+        <!-- Hero Section -->
+        <section class="relative text-white overflow-hidden bg-slate-950">
+            <div class="absolute inset-0">
+                <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-35">
                     <source src="images/courses/hero-video.webm" type="video/webm">
                     <source src="images/courses/hero-video.mp4" type="video/mp4">
                 </video>
-                <!-- 어두운 오버레이 (텍스트 가독성 향상) -->
-                <div class="absolute inset-0 bg-slate-900/60"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(249,160,26,0.28),transparent_34%),linear-gradient(120deg,rgba(15,23,42,0.92),rgba(15,23,42,0.72))]"></div>
             </div>
-            
-            <!-- 텍스트 콘텐츠 -->
-            <div class="max-w-4xl mx-auto px-4 relative z-10 flex flex-col items-center justify-center h-full">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-brand">AI Education & Solution</h1>
-                <p class="text-xl text-slate-200">생성형 AI 기술을 활용하여 업무 효율을 극대화하고 창의적인 콘텐츠를 제작합니다.</p>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-24 lg:py-32">
+                <div class="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
+                    <div>
+                        <span class="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white/10 border border-white/15 text-brand-light text-sm font-bold mb-6">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i>
+                            SmartFork Official AI Learning Platform
+                        </span>
+                        <h1 class="text-4xl md:text-6xl font-black leading-tight mb-6">
+                            와디즈에서 검증된 AI 강의,<br class="hidden md:block">
+                            스마트포크가 직접 운영합니다.
+                        </h1>
+                        <p class="text-lg md:text-xl text-slate-200 leading-relaxed max-w-3xl mb-8">
+                            smartfork.ai.kr은 스마트포크가 직접 만든 AI 강의를 자체 유통하는 공식 플랫폼입니다.
+                            생성형 AI 원리부터 AI 에이전트, Claude Code, OpenClaw, 바이브코딩, AI 영상·이미지 제작까지
+                            실제 결과물을 만드는 커리큘럼으로 이어집니다.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="https://smartfork.ai.kr/" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-brand text-slate-950 font-extrabold hover:bg-brand-light transition-colors shadow-lg shadow-brand/20">
+                                플랫폼 바로가기
+                                <i data-lucide="external-link" class="w-5 h-5"></i>
+                            </a>
+                            <a href="https://smartfork.ai.kr/courses" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/25 bg-white/10 text-white font-bold hover:bg-white/15 transition-colors">
+                                전체 강의 보기
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </a>
+                            <a href="contact.html" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-brand/40 text-brand-light font-bold hover:bg-brand/10 transition-colors">
+                                기업 교육 문의
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="rounded-3xl bg-white/10 border border-white/10 p-6 backdrop-blur-sm">
+                            <p class="text-5xl font-black text-brand-light mb-2">35</p>
+                            <p class="text-slate-200 font-bold">자체 유통 AI 강의</p>
+                            <p class="text-sm text-slate-400 mt-2">단품 19개 + 통합 과정 16개</p>
+                        </div>
+                        <div class="rounded-3xl bg-white/10 border border-white/10 p-6 backdrop-blur-sm">
+                            <p class="text-5xl font-black text-brand-light mb-2">7</p>
+                            <p class="text-slate-200 font-bold">전문 카테고리</p>
+                            <p class="text-sm text-slate-400 mt-2">입문부터 수익화·자동화까지</p>
+                        </div>
+                        <div class="rounded-3xl bg-white text-slate-900 p-6 col-span-2 shadow-2xl">
+                            <p class="text-sm font-bold text-brand mb-2">대표 인기 과정</p>
+                            <p class="text-xl font-black leading-relaxed">AI 에이전트 All In One · AI 영상 제작 · Claude Code/OpenClaw · 바이브코딩 웹/앱 제작</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- AI 활용 입문 -->
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100 overflow-hidden book-card">
-                    <div class="bg-slate-100 relative flex items-center justify-center p-6" style="perspective: 1000px; aspect-ratio: 2/2.4;">
-                        <img src="images/courses/book-cover-intro.webp" alt="AI 활용 입문" class="book-image" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); opacity: 0; transform: rotateZ(7deg) rotateY(90deg);">
+        <!-- Platform Bridge -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14">
+                    <h2 class="text-brand font-bold tracking-wide uppercase mb-3 text-lg">Why SmartFork AI Platform</h2>
+                    <h3 class="text-3xl md:text-4xl font-black text-slate-900">단순 강의몰이 아니라, 실전 AI 로드맵입니다.</h3>
+                    <p class="text-slate-600 max-w-3xl mx-auto mt-5 leading-relaxed">
+                        와디즈에서 먼저 반응을 확인한 주제를 스마트포크 자체 플랫폼에서 더 체계적으로 제공합니다.
+                        무엇을 먼저 배울지 모르는 입문자도, 업무 자동화·콘텐츠 제작·서비스 구현을 원하는 실무자도 단계별로 진입할 수 있습니다.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100 shadow-sm">
+                        <i data-lucide="route" class="w-10 h-10 text-brand mb-5"></i>
+                        <h4 class="text-xl font-bold mb-3">맞춤 학습 진단</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">직무·경험·목표를 기준으로 어떤 강의부터 들어야 할지 학습 트리를 제안합니다.</p>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-3">AI 활용 입문</h3>
-                        <p class="text-slate-600 mb-4 text-sm">AI에 대한 기초적인 이해부터 실전 중심 실습까지. 생성형 AI의 전반적인 개념과 활용법을 체계적으로 학습합니다.</p>
-                        <a href="course-intro.html" class="block w-full py-2.5 px-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors text-center">
-                            더 자세히
-                        </a>
+                    <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100 shadow-sm">
+                        <i data-lucide="bot" class="w-10 h-10 text-brand mb-5"></i>
+                        <h4 class="text-xl font-bold mb-3">AI 에이전트 중심</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">Claude Code, OpenClaw, GPT·Gemini·Claude 활용을 업무 자동화 관점에서 연결합니다.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100 shadow-sm">
+                        <i data-lucide="film" class="w-10 h-10 text-brand mb-5"></i>
+                        <h4 class="text-xl font-bold mb-3">콘텐츠 제작 실전</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">AI 영상, 이미지, 인스타툰, PPT처럼 바로 결과물이 나오는 강의를 제공합니다.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100 shadow-sm">
+                        <i data-lucide="messages-square" class="w-10 h-10 text-brand mb-5"></i>
+                        <h4 class="text-xl font-bold mb-3">커뮤니티·Q&amp;A</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">혼자 듣고 끝나는 강의가 아니라 질문, 후기, 인증으로 학습 지속성을 높입니다.</p>
                     </div>
                 </div>
-                
-                <!-- AI 실전 활용 심화 -->
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100 overflow-hidden book-card">
-                    <div class="bg-slate-100 relative flex items-center justify-center p-6" style="perspective: 1000px; aspect-ratio: 2/2.4;">
-                        <img src="images/courses/book-cover-advanced.webp" alt="AI 실전 활용 심화" class="book-image" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); opacity: 0; transform: rotateZ(7deg) rotateY(90deg);">
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="py-20 bg-slate-950 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                    <div>
+                        <p class="text-brand-light font-bold mb-3">Course Categories</p>
+                        <h2 class="text-3xl md:text-4xl font-black">스마트포크가 직접 구성한 7개 AI 학습 분야</h2>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-3">AI 실전 활용 심화</h3>
-                        <p class="text-slate-600 mb-4 text-sm">상세페이지 제작, 영상 콘텐츠 생성 등 실무 업무에 바로 적용 가능한 핵심 기술을 집중적으로 교육합니다.</p>
-                        <a href="course-advanced.html" class="block w-full py-2.5 px-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors text-center">
-                            더 자세히
-                        </a>
-                    </div>
+                    <a href="https://smartfork.ai.kr/courses" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-brand-light font-bold hover:text-white transition-colors">
+                        플랫폼에서 전체 강의 보기
+                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                    </a>
                 </div>
-                
-                <!-- 기업 맞춤형 출강 -->
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100 overflow-hidden book-card">
-                    <div class="bg-slate-100 relative flex items-center justify-center p-6" style="perspective: 1000px; aspect-ratio: 2/2.4;">
-                        <img src="images/courses/book-cover-corporate.webp" alt="기업 맞춤형 출강" class="book-image" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); opacity: 0; transform: rotateZ(7deg) rotateY(90deg);">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-3">기업 맞춤형 출강</h3>
-                        <p class="text-slate-600 mb-4 text-sm">임직원 대상 ChatGPT, Midjourney 등 실무 활용 프롬프트 엔지니어링 특강을 진행합니다.</p>
-                        <a href="course-corporate.html" class="block w-full py-2.5 px-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors text-center">
-                            더 자세히
-                        </a>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-6"><p class="text-2xl font-black text-brand-light">14</p><h3 class="font-bold mt-2">AI 에이전트</h3><p class="text-sm text-slate-300 mt-2">업무 자동화, Claude Code, OpenClaw</p></div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-6"><p class="text-2xl font-black text-brand-light">7</p><h3 class="font-bold mt-2">바이브 코딩</h3><p class="text-sm text-slate-300 mt-2">웹·앱·게임 제작과 출시</p></div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-6"><p class="text-2xl font-black text-brand-light">5</p><h3 class="font-bold mt-2">AI 영상 생성</h3><p class="text-sm text-slate-300 mt-2">쇼츠부터 단편 영상 제작까지</p></div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-6"><p class="text-2xl font-black text-brand-light">3</p><h3 class="font-bold mt-2">AI 이미지 생성</h3><p class="text-sm text-slate-300 mt-2">광고 이미지와 인스타툰 제작</p></div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-6"><p class="text-2xl font-black text-brand-light">2</p><h3 class="font-bold mt-2">LLM 모델 기반</h3><p class="text-sm text-slate-300 mt-2">프롬프트 원리와 창작 활용</p></div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-6"><p class="text-2xl font-black text-brand-light">2</p><h3 class="font-bold mt-2">AI 이론 기반</h3><p class="text-sm text-slate-300 mt-2">한 번 배우면 오래 가는 원리</p></div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-6"><p class="text-2xl font-black text-brand-light">2</p><h3 class="font-bold mt-2">AI 활용</h3><p class="text-sm text-slate-300 mt-2">PPT, 자산관리 등 실무 응용</p></div>
+                    <div class="rounded-2xl bg-brand text-slate-950 p-6"><p class="text-2xl font-black">1분</p><h3 class="font-bold mt-2">학습 진단</h3><p class="text-sm text-slate-800 mt-2">어디서 시작할지 모를 때 바로 진단</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- B2B CTA -->
+        <section class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="rounded-3xl bg-gradient-to-br from-brand to-pink-600 text-white p-8 md:p-12 shadow-2xl text-center">
+                    <p class="font-bold text-white/80 mb-3">For Companies & Teams</p>
+                    <h2 class="text-3xl md:text-4xl font-black mb-5">기업 교육은 스마트포크가 직접 설계합니다.</h2>
+                    <p class="text-white/90 leading-relaxed max-w-3xl mx-auto mb-8">
+                        공개 강의는 smartfork.ai.kr에서 바로 수강하고, 조직 맞춤형 AI 도입·업무 자동화·콘텐츠 제작 교육은
+                        스마트포크 본사 사이트에서 상담하세요. 내부 직무, 예산, 일정, 목표 성과에 맞춰 커리큘럼을 재구성합니다.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="contact.html" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-slate-950 font-extrabold hover:bg-slate-100 transition-colors">기업 교육 문의하기</a>
+                        <a href="https://smartfork.ai.kr/" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/40 text-white font-bold hover:bg-white/10 transition-colors">개인 수강 플랫폼 보기</a>
                     </div>
                 </div>
             </div>
@@ -107,33 +206,5 @@
     <div id="footer-container"></div>
 
     <script type="module" src="main.js"></script>
-    <script>
-        // 책 이미지 3D 회전 애니메이션
-        window.addEventListener('load', function() {
-            console.log('애니메이션 시작');
-            if (typeof gsap !== 'undefined') {
-                console.log('GSAP 로드됨');
-                // 타임라인 생성
-                const tl = gsap.timeline({ delay: 0.3 });
-                
-                // 각 책마다 순차적으로 애니메이션 적용
-                document.querySelectorAll('.book-image').forEach((img, index) => {
-                    tl.to(img, {
-                        opacity: 1,
-                        rotateY: 0,
-                        duration: 0.8,
-                        ease: 'power2.out'
-                    }, index * 0.3) // stagger 효과
-                    .to(img, {
-                        rotateZ: 0,
-                        duration: 0.4,
-                        ease: 'power2.out'
-                    }, `-=0.2`); // Y축 애니메이션이 끝나기 0.2초 전에 Z축 시작
-                });
-            } else {
-                console.log('GSAP이 로드되지 않음');
-            }
-        });
-    </script>
 </body>
 </html>
