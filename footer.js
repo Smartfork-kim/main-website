@@ -14,6 +14,7 @@ function createFooter() {
                     <p class="text-sm text-slate-500">Copyright © 2025 SMART FORK Co.Ltd All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-6 text-sm">
+                    <a href="https://smartfork.ai.kr/" target="_blank" rel="noopener" class="hover:text-brand transition-colors">강의 보러가기 ↗</a>
                     <a href="#" id="terms-link" class="hover:text-brand transition-colors">이용약관</a>
                     <a href="#" id="privacy-link" class="hover:text-brand transition-colors">개인정보처리방침</a>
                 </div>

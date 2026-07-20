@@ -32,7 +32,7 @@ function createHeader(activePage = 'home') {
                 { label: '기업 맞춤형 출강', href: 'course-corporate.html' }
             ]
         },
-        { id: 'ai-platform', label: 'AI Platform', href: 'https://smartfork.ai.kr/', external: true },
+        { id: 'ai-platform', label: '강의 보러가기', href: 'https://smartfork.ai.kr/', external: true },
         { id: 'products', label: 'Products', href: 'product.html' },
         { id: 'contact', label: 'Contact', href: 'contact.html' }
     ];
